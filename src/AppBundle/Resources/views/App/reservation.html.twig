@@ -1,0 +1,138 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %}
+	Reservation - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<div class="well">
+
+		{{ form_start(form,{'attr':{'class':'form-horizontal'}}) }}
+		{{ form_errors(form) }}
+		<div class="form-group">
+			<div class="col-sm-6 row">
+				{{ form_label(form.dateReservation,'Date de reservation : ',{'label_attr':{'class':'col-sm-4 control-label'}}) }}
+				{{ form_errors(form.dateReservation) }}
+				<div class="col-sm-8">
+					<div id="datepicker1" class="input-group date">
+						{{ form_widget(form.dateReservation,{'attr':{'class':'form-control date'}}) }}
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 row">
+				{{ form_label(form.demiJournee, 'Demie Journéé : ',{'label_attr':{'class':'col-sm-4 control-label'}}) }}
+				{{ form_errors(form.demiJournee) }}
+				<div class="col-sm-6">
+					{{ form_widget(form.demiJournee)}}
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			{{ form_label(form.email,'Votre adresse mail : ',{'label_attr':{'class':'col-sm-2 control-label'}}) }}
+			{{ form_errors(form.email) }}
+			<div class="col-sm-5">
+				{{ form_widget(form.email,{'attr':{'class':'form-control email'}}) }}
+			</div>
+		</div>
+		<div>
+			<h3 class="text-center">Billet(s)</h3>
+			<ul class="billets" data-prototype="{{ form_widget(form.billets.vars.prototype)|e('html_attr') }}">
+				{% for billet in form.billets %}
+				    <li>{{ form_row(billet)}}</li>
+				{% endfor %}
+			</ul>
+		</div>
+
+		{{ form_rest(form)}}
+		{{ form_end(form)}}
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(function dateReservation(){
+				$('#datepicker1').datepicker({
+					todayBtn:'true',
+					format:'dd-mm-yyyy',
+					autoclose:'true',
+					pickerPosition: 'bottom-left',
+					minView: 'month',
+					language: 'fr',
+					daysOfWeekDisabled:'0,2',
+					startDate: '-0m',
+					datesDisabled: [{% for date in listDate %} '{{ date.dateReservation|date('d-m-Y') }}'{% if loop.last%} {% else %},{% endif %}
+					{% endfor %}]
+				});
+			});
+
+		var $collectionHolder;
+
+		// setup an "ajouter un billet" link
+		var $addBilletLink = $('<a href="#" class="add_billet_link">Ajouter un billet</a>');
+		var $newLinkLi = $('<li></li>').append($addBilletLink);
+
+		jQuery(document).ready(function() {
+			// Get the ul that holds the collection of billets
+			$collectionHolder = $('ul.billets');
+
+			// add a delete link to all of the existing tag for li elements
+			$collectionHolder.find('li').each(function() {
+				addBilletFormDeleteLink($(this));
+			});
+
+			// add the "ajouter un billet" anchor and li to the billets ul
+			$collectionHolder.append($newLinkLi);
+
+			// count the current form inputs we have, use that as the new
+			// index when inserting a new item
+			$collectionHolder.data('index', ($collectionHolder.find(':input').length-5));
+
+			$addBilletLink.on('click', function(e) {
+				// prevent the link from creating a '#' on the URL
+				e.preventDefault();
+
+				// add a new tag form
+				addBilletForm($collectionHolder, $newLinkLi);
+			});
+		});
+		function addBilletForm($collectionHolder, $newLinkLi) {
+			// Get the data-prototype
+			var prototype = $collectionHolder.data('prototype');
+
+			// get the new index
+			var index = $collectionHolder.data('index');
+
+			// Replace '__name__' in the prototype's html to
+			// instead be a numbeer based on how many items we have
+			var newForm = prototype.replace(/__name__/g, index);
+
+			// increase the index with one for the next item
+			$collectionHolder.data('index', index +1);
+
+			// Disply the form in the page in an li, before the "ajouter un billet" link li
+			var $newFormLi = $('<li></li>').append(newForm);
+			$newLinkLi.before($newFormLi);
+			addBilletFormDeleteLink($newFormLi);
+		}
+
+		function addBilletFormDeleteLink($billetFormLi){
+			var $removeFormA = $('<a href="#">Supprimer ce billet</a>');
+			$billetFormLi.append($removeFormA);
+
+			$removeFormA.on('click', function(e) {
+				// prevent the link from creating a '#' on the URL
+				e.preventDefault();
+
+				// remove the li for the billet form
+				$billetFormLi.remove();
+			});
+		}
+		});
+	</script>
+{% endblock %}

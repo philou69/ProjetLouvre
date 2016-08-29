@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Billets musée du Louvre</title>
+</head>
+<body>
+	<h2>Bilets d'entrée du musée du Louvre</h2>
+	<div >
+		<p>
+			Billet(s) de la reservation du {{ reservation.dateReservation|date('d/m/Y') }}, enregistrer avec l'email {{ reservation.email }}<br/>
+			Nombre de billets : {{ reservation.billets|length }}</li>
+			Prix total : {{ reservation.prix }}</li>
+		</p>
+
+	</div>
+	{% for billet in reservation.billets %}
+		<div class="row">
+		{% if loop.length > 1 %}<h2>Billet n° {{ loop.index }}</h2>{% else %}<h2>Billet</h2> {% endif %}
+			<p>
+				Nom : {{ billet.nom }}<br/>
+				Prénom : {{ billet.prenom }}<br/>
+				Date de naissance : {{ billet.dateNaissance|date('d/m/Y') }}<br/>
+				{% if billet.reduction == true  %}
+					Billet réduit<br/>
+				{% endif %}
+				Prix : {{ billet.prix }}
+			</p>
+			<img src="{{ qrcode_data_uri("Billet"+ billet.id) }}"
+	</div>
+	{% endfor %}
+
+</body>
+</html>

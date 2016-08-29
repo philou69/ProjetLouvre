@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>{% block title %}Musée du Louvre{% endblock %}</title>
+		<!-- Lien cdn bootstrap -->
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/css/bootstrap-datepicker.min.css">
+
+		<style type="text/css">
+			{% block stylesheets %}
+				/* Style abaissant le contenu de la page pour ne pas être caché sous la navbar */
+				body{
+					padding-top: 80px;
+				}
+				img:{
+					max-width: 100%;
+				}
+			{% endblock %}
+		</style>
+	</head>
+	<body class="container">
+		<header>
+			<!-- Création d'une navbar bootstrap fixe -->
+			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><i class="glyphicon glyphicon-menu-hamburger"></i>Menu</button>
+						<a class="navbar-brand" href="#">Le Louvre</a>
+					</div>
+					<div class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							<li id="accueil"><a href="{{ path('app_home') }}"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+							<li id="tarifs"><a href="{{ path('app_tarifs') }}">Tarif et Horaires</a></li>
+							<li id="reservation"><a href="{{ path('app_reservation') }}">Réservation</a></li>
+						</ul>						
+					</div>
+				</div>
+			</nav>
+		</header>
+		<div class="row">
+			{% block body %}{% endblock %}
+		</div>
+	</body>
+	{% block javascript %}
+		<!-- Appel de la bibliothèque JQuery de Bootstrap et du Javascript en cdn -->
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/js/bootstrap-datepicker.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/locales/bootstrap-datepicker.fr.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+	{% endblock %}
+</html>

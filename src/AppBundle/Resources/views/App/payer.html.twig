@@ -1,0 +1,45 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %}Récapitulatif {% endblock %}
+
+{% block body %}
+	<div id="fb-root"></div>
+		<div class="jumbotron row">
+			<div class="col-sm-8">
+				<h2 class="text-center">Récpitulatif de réservation : </h2>
+				<p>
+					Commande numéro : {{ reservation.id }} <br/>
+					Date de réservation : le {{ reservation.dateReservation|date('d/m/y') }}<br/>
+					Prix total : {{ reservation.prix }} €<br/>
+					Nombre de Billet(s) : {{ reservation.billets|length }} <br/>
+					Status: payer
+				</p>
+				<h3>Liste des visiteurs</h3>
+				{% for billet in reservation.billets %}
+					<ul class="list-unstyled">
+						<li>Nom : {{ billet.nom }}</li>
+						<li>Prénom: {{ billet.prenom }}</li>
+						<li>Date de naissance : {{ billet.dateNaissance|date('d-m-Y') }}</li>
+					</ul>
+				{% else %}
+					
+				{% endfor %}
+			</div>
+			<div class="col-sm-3 col-sm-push-1">
+				<div class="fb-share-button" data-href="http://localhost/lelouvre/web/app_dev.php/partager/facebook/21" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%2Flelouvre%2Fweb%2Fapp_dev.php%2Fpartager%2Ffacebook%2F{{ reservation.id }}&amp;src=sdkpreparse">Partager</a></div>
+				<a href="https://twitter.com/share" class="twitter-share-button" data-url="localhost/lelouvre/web/app_dev.php/partager/twitter/{{ reservation.id }}">Tweet</a> 
+			</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.7";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+{% endblock %}

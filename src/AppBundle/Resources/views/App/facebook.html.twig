@@ -1,0 +1,8 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block body %}
+	<p>{% for billet in reservation.billets %} {% if loop.first %}
+		{{ billet.prenom }} a réserver des place au <a href="{{ url('app_home')}}">Musée du Louvre</a> le {{ reservation.dateReservation|date('d/m/Y')}}
+	{% endif %}
+	{% endfor %}</p>
+{% endblock %}

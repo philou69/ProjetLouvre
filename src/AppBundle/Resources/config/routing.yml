@@ -1,0 +1,40 @@
+app_home:
+    path: /
+    defaults: { _controller: "AppBundle:App:index"}
+
+app_tarifs:
+    path: /tarifs_horaires
+    defaults: { _controller: "AppBundle:App:tarifs"}
+
+app_reservation:
+    path: /reservation
+    defaults: { _controller: "AppBundle:App:reservation"}
+
+app_confirmation:
+    path: /confirmation/{id}
+    defaults: { _controller: "AppBundle:App:confirmation"}
+    requirements:
+      id: \d+
+
+app_payment:
+    path: /payment/{id}/{gateway}
+    defaults: { _controller: "AppBundle:Payment:prepare"}
+    requirements:
+        id: \d+
+        gateway: paypal|stripe
+
+app_done:
+    path: /done
+    defaults: { _controller: "AppBundle:Payment:done"}
+
+app_partage_facebook:
+    path:    /partager/facebook/{id}
+    defaults: { _controller: "AppBundle:Payment:facebook"}
+    requirements:
+        id: \d+
+
+app_partage_twitter:
+    path:     /partager/twitter/{id}
+    defaults: { _controller: "AppBundle:Payment:twitter"}
+    requirements:
+        id: \d+
