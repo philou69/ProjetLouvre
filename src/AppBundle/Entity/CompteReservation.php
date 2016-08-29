@@ -1,21 +1,22 @@
 <?php
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CompteReservation
+ * CompteReservation.
  *
  * @ORM\Table(name="compte_reservation")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CompteReservationRepository")
  */
 class CompteReservation
 {
-  /**
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
+    /**
+    * @ORM\Column(name="id", type="integer")
+    * @ORM\Id
+    * @ORM\GeneratedValue(strategy="AUTO")
+    */
    private $id;
   /**
    * @ORM\Column(name="date_reservation", type="date", unique=true)
@@ -27,13 +28,13 @@ class CompteReservation
    */
   private $total;
 
-  public function __construct()
-  {
-    $this->total = 0;
-  }
+    public function __construct()
+    {
+        $this->total = 0;
+    }
 
     /**
-     * Set dateReservation
+     * Set dateReservation.
      *
      * @param \DateTime $dateReservation
      *
@@ -47,7 +48,7 @@ class CompteReservation
     }
 
     /**
-     * Get dateReservation
+     * Get dateReservation.
      *
      * @return \DateTime
      */
@@ -57,9 +58,9 @@ class CompteReservation
     }
 
     /**
-     * Set total
+     * Set total.
      *
-     * @param integer $total
+     * @param int $total
      *
      * @return CompteReservation
      */
@@ -71,9 +72,9 @@ class CompteReservation
     }
 
     /**
-     * Get total
+     * Get total.
      *
-     * @return integer
+     * @return int
      */
     public function getTotal()
     {
@@ -81,9 +82,9 @@ class CompteReservation
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {

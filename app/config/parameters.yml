@@ -5,8 +5,8 @@ parameters:
     database_name: louvre
     database_user: root
     database_password: Clophil090814@
-    mailer_transport: smtp
-    mailer_host: 127.0.0.1
+    mailer_transport: gmail
+    mailer_host: null
     mailer_user: site.projet.oc
     mailer_password: Clophil090814@
     secret: ThisTokenIsNotSoSecretChangeIt

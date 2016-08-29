@@ -39,14 +39,14 @@
 		</div>
 		<div>
 			<h3 class="text-center">Billet(s)</h3>
-			<ul class="billets" data-prototype="{{ form_widget(form.billets.vars.prototype)|e('html_attr') }}">
-				{% for billet in form.billets %}
-				    <li>{{ form_row(billet)}}</li>
-				{% endfor %}
-			</ul>
+				<ul class="billets" data-prototype="{{ form_widget(form.billets.vars.prototype)|e('html_attr') }}">
+					{% for billet in form.billets %}
+						<li>{{ form_row(billet)}}</li>
+					{% endfor %}
+				</ul>
 		</div>
 
-		{{ form_rest(form)}}
+{{ form_rest(form)}}
 		{{ form_end(form)}}
 	</div>
 
@@ -75,7 +75,7 @@
 
 		// setup an "ajouter un billet" link
 		var $addBilletLink = $('<a href="#" class="add_billet_link">Ajouter un billet</a>');
-		var $newLinkLi = $('<li></li>').append($addBilletLink);
+		var $newLinkDiv = $('<div></div>').append($addBilletLink);
 
 		jQuery(document).ready(function() {
 			// Get the ul that holds the collection of billets
@@ -87,21 +87,21 @@
 			});
 
 			// add the "ajouter un billet" anchor and li to the billets ul
-			$collectionHolder.append($newLinkLi);
+			$collectionHolder.after($newLinkDiv);
 
 			// count the current form inputs we have, use that as the new
 			// index when inserting a new item
-			$collectionHolder.data('index', ($collectionHolder.find(':input').length-5));
+			$collectionHolder.data('index', $collectionHolder.find('li').length);
 
 			$addBilletLink.on('click', function(e) {
 				// prevent the link from creating a '#' on the URL
 				e.preventDefault();
 
 				// add a new tag form
-				addBilletForm($collectionHolder, $newLinkLi);
+				addBilletForm($collectionHolder);
 			});
 		});
-		function addBilletForm($collectionHolder, $newLinkLi) {
+		function addBilletForm($collectionHolder) {
 			// Get the data-prototype
 			var prototype = $collectionHolder.data('prototype');
 
@@ -117,7 +117,7 @@
 
 			// Disply the form in the page in an li, before the "ajouter un billet" link li
 			var $newFormLi = $('<li></li>').append(newForm);
-			$newLinkLi.before($newFormLi);
+			$collectionHolder.append($newFormLi);
 			addBilletFormDeleteLink($newFormLi);
 		}
 

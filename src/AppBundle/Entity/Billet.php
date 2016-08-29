@@ -5,50 +5,50 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* Billet
-*
-* @ORM\Table(name="billet")
-* @ORM\Entity(repositoryClass="AppBundle\Repository\BilletRepository")
-*/
+ * Billet.
+ *
+ * @ORM\Table(name="billet")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BilletRepository")
+ */
 class Billet
 {
-	const PRIX = 16;
-	/**
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
-
-	/**
-	 * @ORM\Column(name="nom", type="string")
-	 */
-	private $nom;
-
-	/**
-	 * @ORM\Column(name="prenom", type="string")
-	 */
-	private $prenom;
-
-	/**
-	 * @ORM\Column(name="date_naissance", type= "date")
-	 */
-	private $dateNaissance;
-
-	/**
-	 * @ORM\Column(name="age", type="integer")
-	 */
-	private $age;
-
-	/**
-	 * @ORM\Column(name="reduction", type="boolean")
-	 */
-	private $reduction;
+    const PRIX = 16;
+    /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
     /**
-	 * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Reservation", inversedBy="billets")
-	 * @ORM\JoinColumn(nullable=false)
-	 */
+     * @ORM\Column(name="nom", type="string")
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(name="prenom", type="string")
+     */
+    private $prenom;
+
+    /**
+     * @ORM\Column(name="date_naissance", type= "date")
+     */
+    private $dateNaissance;
+
+    /**
+     * @ORM\Column(name="age", type="integer")
+     */
+    private $age;
+
+    /**
+     * @ORM\Column(name="reduction", type="boolean")
+     */
+    private $reduction;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Reservation", inversedBy="billets")
+     * @ORM\JoinColumn(nullable=false)
+     */
     private $reservation;
 
     /**
@@ -56,18 +56,15 @@ class Billet
      */
     private $prix;
 
-
     public function __construct()
     {
         $this->reduction = false;
     }
 
-
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -75,7 +72,7 @@ class Billet
     }
 
     /**
-     * Set nom
+     * Set nom.
      *
      * @param string $nom
      *
@@ -89,7 +86,7 @@ class Billet
     }
 
     /**
-     * Get nom
+     * Get nom.
      *
      * @return string
      */
@@ -99,7 +96,7 @@ class Billet
     }
 
     /**
-     * Set prenom
+     * Set prenom.
      *
      * @param string $prenom
      *
@@ -113,7 +110,7 @@ class Billet
     }
 
     /**
-     * Get prenom
+     * Get prenom.
      *
      * @return string
      */
@@ -123,7 +120,7 @@ class Billet
     }
 
     /**
-     * Set dateNaissance
+     * Set dateNaissance.
      *
      * @param \DateTime $dateNaissance
      *
@@ -132,12 +129,13 @@ class Billet
     public function setDateNaissance(\DateTime $dateNaissance)
     {
         $this->dateNaissance = $dateNaissance;
-				$this->setAge();
+        $this->setAge();
+
         return $this;
     }
 
     /**
-     * Get dateNaissance
+     * Get dateNaissance.
      *
      * @return \DateTime
      */
@@ -147,15 +145,15 @@ class Billet
     }
 
     /**
-     * Set age
+     * Set age.
      *
-     * @param integer $age
+     * @param int $age
      *
      * @return Billet
      */
     public function setAge()
     {
-				$now = new \DateTime();
+        $now = new \DateTime();
         $age = $this->dateNaissance->diff($now);
 
         $this->age = $age->y;
@@ -166,9 +164,9 @@ class Billet
     }
 
     /**
-     * Get age
+     * Get age.
      *
-     * @return integer
+     * @return int
      */
     public function getAge()
     {
@@ -176,9 +174,9 @@ class Billet
     }
 
     /**
-     * Set reduction
+     * Set reduction.
      *
-     * @param boolean $reduction
+     * @param bool $reduction
      *
      * @return Billet
      */
@@ -196,9 +194,9 @@ class Billet
     }
 
     /**
-     * Get reduction
+     * Get reduction.
      *
-     * @return boolean
+     * @return bool
      */
     public function getReduction()
     {
@@ -212,25 +210,16 @@ class Billet
 
     public function setPrix()
     {
-        if($this->age < 4)
-        {
-           $this->prix = 0;
-        }
-        else if($this->age >=4 && $this->age <= 12)
-        {
+        if ($this->age < 4) {
+            $this->prix = 0;
+        } elseif ($this->age >= 4 && $this->age <= 12) {
             $this->prix = 8;
-        }
-        else if($this->age >= 60)
-        {
+        } elseif ($this->age >= 60) {
             $this->prix = 12;
-        }
-        else
-        {
-            if($this->isReduit() === true){
+        } else {
+            if ($this->isReduit() === true) {
                 $this->prix = 10;
-            }
-            else
-            {
+            } else {
                 $this->prix = self::PRIX;
             }
         }
@@ -244,7 +233,7 @@ class Billet
     }
 
     /**
-     * Set reservation
+     * Set reservation.
      *
      * @param \AppBundle\Entity\Reservation $reservation
      *
@@ -258,7 +247,7 @@ class Billet
     }
 
     /**
-     * Get reservation
+     * Get reservation.
      *
      * @return \AppBundle\Entity\Reservation
      */
@@ -266,6 +255,4 @@ class Billet
     {
         return $this->reservation;
     }
-
-
 }

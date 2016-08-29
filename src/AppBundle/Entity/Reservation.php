@@ -5,47 +5,46 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Reservation
+ * Reservation.
  *
  * @ORM\Table(name="reservation")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReservationRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-
 class Reservation
 {
-	/**
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
+    /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
-	/**
-	 * @ORM\Column(name="date_reservation", type="date")
-	 */
-	private $dateReservation;
+    /**
+     * @ORM\Column(name="date_reservation", type="date")
+     */
+    private $dateReservation;
 
-	/**
-	 * @ORM\Column(name="email", type="text")
-	 */
-	private $email;
+    /**
+     * @ORM\Column(name="email", type="text")
+     */
+    private $email;
 
-	/**
-	 * @ORM\OneToMany(targetEntity="AppBundle\Entity\Billet", mappedBy="reservation", cascade={"persist"})
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $billets;
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Billet", mappedBy="reservation", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $billets;
 
-	/**
-	 * @ORM\Column(name="demi_journee", type="boolean")
-	 */
-	private $demiJournee;
+    /**
+     * @ORM\Column(name="demi_journee", type="boolean")
+     */
+    private $demiJournee;
 
-	/**
-	 * @ORM\Column(name="prix", type="integer")
-	 */
-	private $prix;
+    /**
+     * @ORM\Column(name="prix", type="integer")
+     */
+    private $prix;
 
     /**
      * @ORM\Column(name="payer", type="boolean")
@@ -53,7 +52,7 @@ class Reservation
     private $payer;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -63,9 +62,9 @@ class Reservation
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -73,7 +72,7 @@ class Reservation
     }
 
     /**
-     * Set dateReservation
+     * Set dateReservation.
      *
      * @param \DateTime $dateReservation
      *
@@ -81,13 +80,13 @@ class Reservation
      */
     public function setDateReservation($dateReservation)
     {
-        $this->dateReservation = \DateTime::createFromFormat("d-m-Y",$dateReservation);
+        $this->dateReservation = \DateTime::createFromFormat('d-m-Y', $dateReservation);
 
         return $this;
     }
 
     /**
-     * Get dateReservation
+     * Get dateReservation.
      *
      * @return \DateTime
      */
@@ -97,7 +96,7 @@ class Reservation
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
      *
@@ -111,7 +110,7 @@ class Reservation
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -120,8 +119,6 @@ class Reservation
         return $this->email;
     }
 
-    /**
-     */
     public function addDemiJournee()
     {
         $this->demiJournee = true;
@@ -130,7 +127,7 @@ class Reservation
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDemiJournee()
     {
@@ -138,55 +135,48 @@ class Reservation
     }
 
     /**
-     * Set prix
+     * Set prix.
      *
-     * @param integer $prix
+     * @param int $prix
      *
      * @return Reservation
      */
     public function setPrix($prix)
     {
         $this->prix = $prix;
+
         return $this;
     }
 
     /**
-     * Get prix
+     * Get prix.
      *
-     * @return integer
+     * @return int
      */
     public function getPrix()
     {
         $prix = 0;
-        if($this->memeNom() === true)
-        {
-            if($this->isDemiJournee() === true)
-            {
+        if ($this->memeNom() === true) {
+            if ($this->isDemiJournee() === true) {
                 $prix = 17.5;
-            }
-            else{
+            } else {
                 $prix = 35;
             }
-        }
-        else
-        {
-            foreach ($this->billets as $billet)
-            {
-                if($this->isDemiJournee() === true)
-                {
-                    $prix = $prix + ($billet->getPrix()/2);
-                }
-                else
-                {
+        } else {
+            foreach ($this->billets as $billet) {
+                if ($this->isDemiJournee() === true) {
+                    $prix = $prix + ($billet->getPrix() / 2);
+                } else {
                     $prix = $prix + $billet->getPrix();
                 }
             }
         }
+
         return $prix;
     }
 
     /**
-     * Add billet
+     * Add billet.
      *
      * @param \AppBundle\Entity\Billet $billet
      *
@@ -201,7 +191,7 @@ class Reservation
     }
 
     /**
-     * Remove billet
+     * Remove billet.
      *
      * @param \AppBundle\Entity\Billet $billet
      */
@@ -211,7 +201,7 @@ class Reservation
     }
 
     /**
-     * Get billets
+     * Get billets.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -225,14 +215,14 @@ class Reservation
         $nom = null;
         $memeNom = 0;
         foreach ($this->billets as $key => $billet) {
-            if($key === 0)
-            {
+            if ($key === 0) {
                 $nom = $billet->getNom();
             }
-            if($billet->getNom() == $nom){
-                $memeNom ++;
+            if ($billet->getNom() == $nom) {
+                ++$memeNom;
             }
         }
+
         return $memeNom == 4;
     }
 
@@ -248,12 +238,10 @@ class Reservation
         return $this->payer;
     }
 
-
-
     /**
-     * Set demiJournee
+     * Set demiJournee.
      *
-     * @param boolean $demiJournee
+     * @param bool $demiJournee
      *
      * @return Reservation
      */
@@ -265,9 +253,9 @@ class Reservation
     }
 
     /**
-     * Get demiJournee
+     * Get demiJournee.
      *
-     * @return boolean
+     * @return bool
      */
     public function getDemiJournee()
     {
@@ -275,9 +263,9 @@ class Reservation
     }
 
     /**
-     * Set payer
+     * Set payer.
      *
-     * @param boolean $payer
+     * @param bool $payer
      *
      * @return Reservation
      */
@@ -289,9 +277,9 @@ class Reservation
     }
 
     /**
-     * Get payer
+     * Get payer.
      *
-     * @return boolean
+     * @return bool
      */
     public function getPayer()
     {

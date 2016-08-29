@@ -1,9 +1,18 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
-#    parameter_name: value
+   pdf_path: %kernel.root_dir%/../web/uploads/pdf
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+   reservation.capture.event_subscriber:
+       class: AppBundle\EventListener\ReservationSubscriber
+       arguments: ["@knp_snappy.pdf", "@twig", "%pdf_path%", "@mailer"]
+       tags:
+         - { name: kernel.event_subscriber, method: generatePDF }
+         - { name: kernel.event_subscriber, method: sendMail }
+
+services:
+  reservation.persist.event_subscriber:
+      class: AppBundle\EventListener\ReservationSubscriber
+      tags:
+        - { name: kernel.event_subscriber, method: comptePrix}
