@@ -32,8 +32,6 @@ class AppController extends Controller
         $form = $this->createForm(ReservationType::class, $reservation);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            dump($reservation);
-            exit;
             $this->get('event_dispatcher')->dispatch('reservation.persist', new ReservationEvent($reservation));
 
             $em->persist($reservation);

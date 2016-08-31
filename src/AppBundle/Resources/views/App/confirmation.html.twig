@@ -2,6 +2,12 @@
 
 {% block title %} Confirmation {% endblock %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	.payment{
+		max-width: 50px;
+	}
+{% endblock %}
 {% block body %}
 	<div class="col-sm-8 jumbotron">
 		<h2 class="text-center">Récapitulatif de commande</h2>
@@ -10,9 +16,14 @@
 			<li>
 				<ul class="list-unstyled">
 					{% for billet in reservation.billets %}
-						<li>Billet de : {{ billet.nom }} {{ billet.prenom }}</li>
-						<li>né le : {{ billet.dateNaissance|date('d/m/Y') }}</li>
-						<li>Prix du billet :{% if reservation.prix == 35 %}{% set prix = 35/4 %}{{ prix }}{% elseif reservation.prix == 17.5%} {% set prix = 17.5/4 %} {{ prix}} {% endif %} {{ billet.prix }}€</li>
+											<li> {% if loop.length =1 %}Votre billet {% else %}
+											    Billet n° {{loop.index}}{% endif %}
+												<ul>
+													<li>Billet de : {{ billet.nom }} {{ billet.prenom }}</li>
+													<li>né le : {{ billet.dateNaissance|date('d/m/Y') }}</li>
+													<li>Reduction : {{ billet.reduction }}</li>
+												</ul>
+											</li>
 					{% endfor %}
 				</ul>
 			</li>
@@ -21,7 +32,7 @@
 	</div>
 	<div class="col-sm-3 col-sm-push-1 jumbotron">
 		<h2>Payement</h2>
-		<a href="{{ path('app_payment', {'id': reservation.id, 'gateway': 'paypal'})}}">Paypal</a><br/>
-		<a href="{{ path('app_payment', {'id': reservation.id, 'gateway': 'stripe'})}}">Stripe</a>
+		<a href="{{ path('app_payment', {'id': reservation.id, 'gateway': 'paypal'})}}" class="row"><img class="col-xs-6 col-sm-12" src="{{ asset('/uploads/images/paypal.png')}}" alt="paypal" /></a><br/>
+		<a href="{{ path('app_payment', {'id': reservation.id, 'gateway': 'stripe'})}}" class="row"><img src="{{ asset('/uploads/images/stripe.png') }}" alt="stripe" class="col-sm-12 col-xs-6"/></a>
 	</div>
 {% endblock %}

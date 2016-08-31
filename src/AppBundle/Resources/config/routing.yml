@@ -27,14 +27,12 @@ app_done:
     path: /done
     defaults: { _controller: "AppBundle:Payment:done"}
 
-app_partage_facebook:
-    path:    /partager/facebook/{id}
-    defaults: { _controller: "AppBundle:Payment:facebook"}
+app_recapitulatif:
+    path: /recapitulatif/{id}
+    defaults: { _controller: "AppBundle:Payment:recapitulatif"}
     requirements:
-        id: \d+
+      id: \d+
 
-app_partage_twitter:
-    path:     /partager/twitter/{id}
-    defaults: { _controller: "AppBundle:Payment:twitter"}
-    requirements:
-        id: \d+
+app_partage:
+    path:    /partager
+    defaults: { _controller: "AppBundle:Payment:partager"}

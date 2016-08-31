@@ -48,7 +48,6 @@ class PaymentController extends Controller
         $reservation = $em->getRepository('AppBundle\Entity\Reservation')->findOneBy(array('id' => $payment->getClientId()));
 
         if ($status->isCaptured()) {
-            $this->get('event_dispatcher')->dispatch('reservation.captured', new ReservationEvent($reservation));
             $reservation->addPayement();
 
             $dateReservation = $em->getRepository('AppBundle:CompteReservation')->findOneBy(array('dateReservation' => $reservation->getDateReservation()));
@@ -62,23 +61,19 @@ class PaymentController extends Controller
             $em->persist($dateReservation);
             $em->flush();
 
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Billet du louvre')
-                ->setFrom('phil.pichet@gmail.com')
-                ->setTo($reservation->getEmail())
-                ->setBody(
-                    $this->renderView('AppBundle:App:email.txt.twig', array('reservation' => $reservation), 'text/plain'))
-                ->addPart($this->renderView('AppBundle:App:email.html.twig', array('reservation' => $reservation),  'text/html'))
-                ->attach(\Swift_Attachment::frompath($this->getParameter('kernel.root_dir').'/../web/uploads/pdf/Reservation'.$reservation->getId().'.pdf'));
-            $this->get('mailer')->send($message);
+            $this->get('event_dispatcher')->dispatch('reservation.captured', new ReservationEvent($reservation));
 
-            return $this->render('AppBundle:App:payer.html.twig', array('reservation' => $reservation, 'payment' => $payment));
+            return $this->redirectToRoute('app_recapitulatif', array('id' => $reservation->getId()));
         } else {
             return $this->redirectToRoute('app_confirmation', array('id' => $reservation->getId()));
         }
     }
 
-    public function facebookAction(Reservation $reservation)
+    public function recapitulatifAction(Reservation $reservation)
+    {
+      return $this->render('AppBundle:App:payer.html.twig', array('reservation' => $reservation));
+    }
+    public function partagerAction(Reservation $reservation)
     {
         return $this->render('AppBundle:App:facebook.html.twig', array('reservation' => $reservation));
     }

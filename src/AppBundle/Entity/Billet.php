@@ -200,6 +200,10 @@ class Billet
      */
     public function getReduction()
     {
+        if ($this->age < 12 && $this->age > 60) {
+            return false;
+        }
+
         return $this->reduction;
     }
 
