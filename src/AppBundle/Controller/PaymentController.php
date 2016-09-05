@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Payum\Core\Request\GetHumanStatus;
 use AppBundle\Entity\Reservation;
 use AppBundle\Entity\CompteReservation;
-use Payum\Core\Model\Payment;
 use AppBundle\Event\ReservationEvent;
 
 class PaymentController extends Controller
@@ -71,7 +70,7 @@ class PaymentController extends Controller
 
     public function recapitulatifAction(Reservation $reservation)
     {
-      return $this->render('AppBundle:App:payer.html.twig', array('reservation' => $reservation));
+        return $this->render('AppBundle:App:payer.html.twig', array('reservation' => $reservation));
     }
     public function partagerAction(Reservation $reservation)
     {

@@ -8,8 +8,7 @@ use Doctrine\ORM\EntityManager;
 
 class FullDateReservationValidator extends ConstraintValidator
 {
-
-  /**
+    /**
    * @var EntityManager
    */
   private $em;
@@ -19,7 +18,7 @@ class FullDateReservationValidator extends ConstraintValidator
    */
   public function setEntityManager(EntityManager $em)
   {
-    $this->em = $em;
+      $this->em = $em;
   }
 
   /**
@@ -28,13 +27,24 @@ class FullDateReservationValidator extends ConstraintValidator
    */
   public function validate($value, Constraint $constraint)
   {
-    $dateComplete = $this->em->getRepository('AppBundle:CompteReservation')->findBy(array('dateReservation' => $value));
+      $dateComplete = $this->em->getRepository('AppBundle:CompteReservation')->findOneBy(array('dateReservation' => $value));
 
-    if ($dateComplete !== null && $dateComplete->getTotal() == 1000)
-    {
-      $this->context->buildViolation($constraint->messageDatePleine)
+      if ($dateComplete !== null && $dateComplete->getTotal() == 1000) {
+          $this->context->buildViolation($constraint->messageFull)
+              ->setParameter('date', $value->format('d/m/Y'))
           ->addViolation();
-
-    }
+      }
+      elseif ($value->format('d/m') == date('01/05') || $value->format('d/m') == date('01/11') || $value->format('d/m') == date('25/12'))
+      {
+          $this->context->buildViolation($constraint->messageClose)
+              ->setParameter('date', $value->format('d/m'))
+              ->addViolation();
+      }
+      elseif ($value->format('N') == 2 || $value->format('N') == 7)
+      {
+          $this->context->buildViolation($constraint->messageClose)
+              ->setParameter('date', $value->format('l'))
+              ->addViolation();
+      }
   }
 }

@@ -1,26 +1,34 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
-   pdf_path: %kernel.root_dir%/../web/uploads/pdf
+   pdf_path: "%kernel.root_dir%/../web/uploads/pdf"
 
 services:
    reservation.capture.event_subscriber:
        class: AppBundle\EventListener\ReservationSubscriber
-       arguments: ["@knp_snappy.pdf", "@twig", "%pdf_path%", "@mailer"]
+       calls:
+        - [ setSnappy, ["@knp_snappy.pdf"]]
+        - [ setTwig, ['@twig']]
+        - [ setPdfPath, ['%pdf_path%']]
+        - [ setMailer, ['@mailer']]
        tags:
-         - { name: kernel.event_subscriber, method: generatePDF }
-         - { name: kernel.event_subscriber, method: sendMail }
+         - { name: kernel.event_subscriber }
 
-services:
-  reservation.persist.event_subscriber:
+   reservation.persist.event_subscriber:
       class: AppBundle\EventListener\ReservationSubscriber
       tags:
-        - { name: kernel.event_subscriber, method: comptePrix}
+        - { name: kernel.event_subscriber }
 
-services:
-  validator.date_reservation:
-    class: AppBundle\Validator\Constraints\FullDateReservationValidator
-    calls:
-      - [ setEntityManager,['@doctrine.orm.default_entity_manager']]
-    tags:
-      - { name: validator.constraint_validator }
+   validator.date_reservation:
+      class: AppBundle\Validator\Constraints\FullDateReservationValidator
+      calls:
+        - [ setEntityManager,['@doctrine.orm.entity_manager']]
+      tags:
+        - { name: validator.constraint_validator }
+
+   validator.reservation:
+      class: AppBundle\Validator\Constraints\ReservationValidator
+      calls:
+        - [ setEntityManager, ['@doctrine.orm.entity_manager']]
+      tags:
+        - { name: validator.constraint_validator}

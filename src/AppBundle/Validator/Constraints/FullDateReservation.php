@@ -9,10 +9,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class FullDateReservation extends Constraint
 {
-  public $message = "La date  n'est pas valide";
+    public $messageFull = "Le date est plein";
+    public $messageClose = "Le date, le musée est fermé";
 
-  public function validatedBy()
-  {
-    return get_class($this).'Validator';
-  }
+    public function validatedBy()
+    {
+        return get_class($this).'Validator';
+    }
 }

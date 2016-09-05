@@ -10,6 +10,7 @@ use AppBundle\Validator\Constraints as AppAssert;
  *
  * @ORM\Table(name="reservation")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReservationRepository")
+ * @AppAssert\Reservation
  */
 class Reservation
 {
@@ -179,13 +180,13 @@ class Reservation
 
     public function setBillets($billets)
     {
-      foreach ($billets as $billet) {
-        $billet->setReservation($this);
-      }
+        foreach ($billets as $billet) {
+            $billet->setReservation($this);
+        }
 
-      $this->billets = $billets;
+        $this->billets = $billets;
 
-      return $this;
+        return $this;
     }
     /**
      * Add billet.

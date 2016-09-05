@@ -32,18 +32,19 @@ class AppController extends Controller
         $form = $this->createForm(ReservationType::class, $reservation);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-          dump($reservation);
-          exit;
-          foreach ($listDatesCompletes as $dateComplete) {
-            if( $dateComplete == $reservation->getDateReservation()){
-              $this->request->getSession()->getFlashBag()->add('warning', 'La capacite de visisteurs du musée est atteinte le jour sélectionner.');
-              return $this->render('AppBundle:App:reservation.html.twig', array('form' => $form->createView(), 'listDate' => $listDateCompletes));
+            dump($reservation);
+            exit;
+            foreach ($listDatesCompletes as $dateComplete) {
+                if ($dateComplete == $reservation->getDateReservation()) {
+                    $this->request->getSession()->getFlashBag()->add('warning', 'La capacite de visisteurs du musée est atteinte le jour sélectionner.');
+
+                    return $this->render('AppBundle:App:reservation.html.twig', array('form' => $form->createView(), 'listDate' => $listDateCompletes));
+                } elseif ($reservation->getDateReservation()->format('N') == 7 || $reservation->getDateReservation()->format('N') == 2 || $reservation->getDateReservation()->format('d/m') == date('01/05') || $reservation->getDateReservation()->format('d/m') == date('01/11') || $reservation->getDateReservation()->format('d/m') == date('25/12')) {
+                    $request->getSession()->getFlashBag()->add('warning', 'Le musée est fermé le jour sélectionner');
+
+                    return $this->render('AppBundle:App:reservation.html.twig', array('form' => $form->createView(), 'listDate' => $listDatesCompletes));
+                }
             }
-            elseif( $reservation->getDateReservation()->format('N') == 7 || $reservation->getDateReservation()->format('N') == 2 || $reservation->getDateReservation()->format('d/m') == date('01/05') || $reservation->getDateReservation()->format('d/m') == date('01/11') || $reservation->getDateReservation()->format('d/m') == date('25/12')){
-              $request->getSession()->getFlashBag()->add('warning', 'Le musée est fermé le jour sélectionner');
-              return $this->render('AppBundle:App:reservation.html.twig', array('form' => $form->createView(), 'listDate' => $listDatesCompletes));
-            }
-          }
             $this->get('event_dispatcher')->dispatch('reservation.persist', new ReservationEvent($reservation));
 
             $em->persist($reservation);

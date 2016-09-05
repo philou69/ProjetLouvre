@@ -27,7 +27,7 @@ class ReservationType extends AbstractType
                         ))
             ->add('billets', CollectionType::class, array(
                            'entry_type' => BilletType::class,
-                           'by_reference' =>false,
+                           'by_reference' => false,
                            'allow_add' => true,
                            'allow_delete' => true,
                            'label_attr' => array('class' => 'col-xs-2'),

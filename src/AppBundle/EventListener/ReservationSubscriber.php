@@ -4,9 +4,6 @@ namespace AppBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Knp\Bundle\SnappyBundle\Snappy\LoggableGenerator;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
 
 class ReservationSubscriber implements EventSubscriberInterface
 {
@@ -15,22 +12,33 @@ class ReservationSubscriber implements EventSubscriberInterface
     private $pdfPath;
     private $mailer;
 
-    public function __construct(LoggableGenerator $snappy, \Twig_Environment $twig, $pdfPath, \Swift_Mailer $mailer)
+    public function setSnappy(LoggableGenerator $snappy)
     {
         $this->snappy = $snappy;
+    }
+
+    public function setTwig(\Twig_Environment $twig)
+    {
         $this->twig = $twig;
+    }
+
+    public function setPdfPath($pdfPath)
+    {
         $this->pdfPath = $pdfPath;
+    }
+
+    public function setMailer(\Swift_Mailer $mailer)
+    {
         $this->mailer = $mailer;
     }
 
     public static function getSubscribedEvents()
     {
         return array(
-      'reservation.persist' => array(array('memeJour'), array('calculPrix'),),
+      'reservation.persist' => array(array('memeJour'), array('calculPrix')),
       'reservation.captured' => array(array('generatePDF'), array('sendMail')),
     );
     }
-
 
     public function memeJour($event)
     {

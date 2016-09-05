@@ -8,7 +8,7 @@ class AppKernel extends Kernel
     public function __construct($environment, $debug)
     {
         date_default_timezone_set('Europe/Berlin');
-	parent::__construct($environment, $debug);
+        parent::__construct($environment, $debug);
     }
 
     public function registerBundles()
@@ -32,7 +32,6 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-
         }
 
         return $bundles;

@@ -1,3 +1,5 @@
 /web/uploads/pdf/*
 /var/*
 /vendor/*
+.idea
+/app/config/parameters.yml
