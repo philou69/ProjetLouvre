@@ -27,11 +27,23 @@ class AppController extends Controller
         $reservation = new Reservation();
         $reservation->addBillet(new Billet());
 
-        $listDate = $em->getRepository('AppBundle:CompteReservation')->findBy(array('total' => 1000));
+        $listDatesCompletes = $em->getRepository('AppBundle:CompteReservation')->findBy(array('total' => 1000));
 
         $form = $this->createForm(ReservationType::class, $reservation);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+          dump($reservation);
+          exit;
+          foreach ($listDatesCompletes as $dateComplete) {
+            if( $dateComplete == $reservation->getDateReservation()){
+              $this->request->getSession()->getFlashBag()->add('warning', 'La capacite de visisteurs du musée est atteinte le jour sélectionner.');
+              return $this->render('AppBundle:App:reservation.html.twig', array('form' => $form->createView(), 'listDate' => $listDateCompletes));
+            }
+            elseif( $reservation->getDateReservation()->format('N') == 7 || $reservation->getDateReservation()->format('N') == 2 || $reservation->getDateReservation()->format('d/m') == date('01/05') || $reservation->getDateReservation()->format('d/m') == date('01/11') || $reservation->getDateReservation()->format('d/m') == date('25/12')){
+              $request->getSession()->getFlashBag()->add('warning', 'Le musée est fermé le jour sélectionner');
+              return $this->render('AppBundle:App:reservation.html.twig', array('form' => $form->createView(), 'listDate' => $listDatesCompletes));
+            }
+          }
             $this->get('event_dispatcher')->dispatch('reservation.persist', new ReservationEvent($reservation));
 
             $em->persist($reservation);
@@ -40,7 +52,7 @@ class AppController extends Controller
             return $this->redirectToRoute('app_confirmation', array('id' => $reservation->getId()));
         }
 
-        return $this->render('AppBundle:App:reservation.html.twig', array('form' => $form->createView(), 'listDate' => $listDate));
+        return $this->render('AppBundle:App:reservation.html.twig', array('form' => $form->createView(), 'listDate' => $listDatesCompletes));
     }
 
     public function confirmationAction(Reservation $reservation)

@@ -4,6 +4,9 @@ namespace AppBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Knp\Bundle\SnappyBundle\Snappy\LoggableGenerator;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ReservationSubscriber implements EventSubscriberInterface
 {
@@ -23,12 +26,12 @@ class ReservationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-      'reservation.persist' => array(array('addBillet'), array('memeJour'), array('calculPrix')),
+      'reservation.persist' => array(array('addReservation'), array('memeJour'), array('calculPrix'),),
       'reservation.captured' => array(array('generatePDF'), array('sendMail')),
     );
     }
 
-    public function addBillet($event)
+    public function addReservation($event)
     {
         $reservation = $event->getReservation();
 

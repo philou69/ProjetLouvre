@@ -175,6 +175,16 @@ class Reservation
         return $prix;
     }
 
+    public function setBillets($billets)
+    {
+      foreach ($billets as $billet) {
+        $billet->setReservation($this);
+      }
+
+      $this->billets = $billets;
+
+      return $this;
+    }
     /**
      * Add billet.
      *

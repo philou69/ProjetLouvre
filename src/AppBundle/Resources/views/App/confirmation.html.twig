@@ -13,15 +13,20 @@
 		<h2 class="text-center">Récapitulatif de commande</h2>
 		<ul class="list-unstyled">
 			<li>Réservation du {{ reservation.dateReservation|date('d/m/Y') }}</li>
+			{% if reservation.demiJournee == true %} <li>Réservation en demie journée.<br/>
+				<small>Vous ne pourrez rentrer qu'à partir de 14h.</small></li>
+			{% endif %}
 			<li>
 				<ul class="list-unstyled">
 					{% for billet in reservation.billets %}
-											<li> {% if loop.length =1 %}Votre billet {% else %}
+											<li> {% if loop.length == 1 %}Votre billet {% else %}
 											    Billet n° {{loop.index}}{% endif %}
 												<ul>
 													<li>Billet de : {{ billet.nom }} {{ billet.prenom }}</li>
 													<li>né le : {{ billet.dateNaissance|date('d/m/Y') }}</li>
-													<li>Reduction : {{ billet.reduction }}</li>
+													<li>Reduction : {% if billet.reduction == true %}Oui<br/>
+														<small>Un justificatif vous seras demandé à l'entrée.</small> {% else %}
+													    Non{% endif %}</li>
 												</ul>
 											</li>
 					{% endfor %}

@@ -43,9 +43,11 @@ function ajoutBillet($container) {
 function addDeleteLink($prototype) {
   //Création du lien
   var $deleteLink = $('<a href="#" class="btn btn-danger btn-xs">Supprimer</a>');
+  var $divDeleteLink = $('<div class="text-center"></div');
+  $divDeleteLink.append($deleteLink);
 
   // On ajoute le bouton au prototype
-  $prototype.append($deleteLink);
+  $prototype.append($divDeleteLink);
 
   // Ajoute de la suppresion du billet au click
   $deleteLink.click(function(e) {

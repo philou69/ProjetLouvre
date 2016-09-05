@@ -27,7 +27,7 @@ class BilletType extends AbstractType
                       'required' => false, ))
             ->add('dateNaissance', DateType::class, array(
                       'label' => 'Date de naissance :',
-                      'years' => range(1900, 2016),
+                      'years' => range(1916, 2016),
             ))
         ;
     }

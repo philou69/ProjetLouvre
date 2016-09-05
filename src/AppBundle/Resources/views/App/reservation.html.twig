@@ -35,18 +35,22 @@
 				{{ form_widget(form.email,{'attr':{'class':'form-control input-sm email'}}) }}
 			</div>
 		</div>
-
-		{{form_row(form.billets)}}
-		<div class="form-group">
-			<a href="#" id="ajout_billet" class=" col-sm-2 col-sm-push-3 btn btn-default btn-xs">Rajouter un billet</a><br/>
+		<div id="reservation_billets" data-prototype="{{ form_widget(form.billets.vars.prototype)|e}}">
+			{% for billet in form.billets %}
+			    {{ form_widget(billet)}}
+			{% endfor %}
 		</div>
-		<div class="form-group">
-			{{ form_widget(form.save,{'attr':{'class':'col-sm-2 col-sm-push-3 btn btn-default btn-xs'}})}}
+		<div class="text-center">
+			<a href="#" id="ajout_billet" class="btn btn-default btn-xs">Rajouter un billet</a><br/>
+		</div>
+		<div class="form-group text-center">
+			{{ form_widget(form.save,{'attr':{'class':'btn btn-default btn-xs'}})}}
 		</div>
 
 		{{ form_rest(form)}}
 		{{ form_end(form)}}
 
+				<small>Toute réservation pour le jour même effectué après 14h seront automatiuement passé en demie hournée.</small>
 	</div>
 
 {% endblock %}
@@ -64,7 +68,7 @@
 		  daysOfWeekDisabled:'0,2',
 		  startDate: '-0m',
 		  datesDisabled: [{% for date in listDate %} '{{ date.dateReservation|date('d-m-Y') }}'{% if loop.last%} {% else %},{% endif %}
-		  {% endfor %}]
+		  {% endfor %}, '01-11-2016', '25-12-2016','01/05/2017', '01-11-2017', '25-12-2017',]
 		});
 	</script>
 	<script src="{{ asset('/public/js/ajoutBillet.js')}}"></script>
