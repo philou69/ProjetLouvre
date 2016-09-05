@@ -26,19 +26,11 @@ class ReservationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-      'reservation.persist' => array(array('addReservation'), array('memeJour'), array('calculPrix'),),
+      'reservation.persist' => array(array('memeJour'), array('calculPrix'),),
       'reservation.captured' => array(array('generatePDF'), array('sendMail')),
     );
     }
 
-    public function addReservation($event)
-    {
-        $reservation = $event->getReservation();
-
-        foreach ($reservation->getBillets() as $billet) {
-            $billet->setReservation($reservation);
-        }
-    }
 
     public function memeJour($event)
     {

@@ -67,8 +67,7 @@
 		  language: 'fr',
 		  daysOfWeekDisabled:'0,2',
 		  startDate: '-0m',
-		  datesDisabled: [{% for date in listDate %} '{{ date.dateReservation|date('d-m-Y') }}'{% if loop.last%} {% else %},{% endif %}
-		  {% endfor %}, '01-11-2016', '25-12-2016','01/05/2017', '01-11-2017', '25-12-2017',]
+		  datesDisabled: [ '01-11-2016', '25-12-2016','01/05/2017', '01-11-2017', '25-12-2017',]
 		});
 	</script>
 	<script src="{{ asset('/public/js/ajoutBillet.js')}}"></script>

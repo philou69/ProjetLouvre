@@ -16,3 +16,11 @@ services:
       class: AppBundle\EventListener\ReservationSubscriber
       tags:
         - { name: kernel.event_subscriber, method: comptePrix}
+
+services:
+  validator.date_reservation:
+    class: AppBundle\Validator\Constraints\FullDateReservationValidator
+    calls:
+      - [ setEntityManager,['@doctrine.orm.default_entity_manager']]
+    tags:
+      - { name: validator.constraint_validator }

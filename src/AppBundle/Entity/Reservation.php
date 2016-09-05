@@ -3,13 +3,13 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Reservation.
  *
  * @ORM\Table(name="reservation")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReservationRepository")
- * @ORM\HasLifecycleCallbacks()
  */
 class Reservation
 {
@@ -21,9 +21,11 @@ class Reservation
     private $id;
 
     /**
-     * @ORM\Column(name="date_reservation", type="date")
+     * @var \Datetime
+     * @AppAssert\FullDateReservation
+     * @ORM\Column(type="date")
      */
-    private $dateReservation;
+    protected $dateReservation;
 
     /**
      * @ORM\Column(name="email", type="text")
