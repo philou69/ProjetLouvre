@@ -76,7 +76,7 @@ class BilletTest extends \PHPUnit_Framework_TestCase
         $reservation->addBillet($billet);
         $billet->setDateNaissance(new \DateTime('1987-08-25'));
 
-        $this->assertEquals('28', $billet->getAge());
+        $this->assertEquals('29', $billet->getAge());
     }
 
     public function testIsReduct()

@@ -32,7 +32,3 @@ app_recapitulatif:
     defaults: { _controller: "AppBundle:Payment:recapitulatif"}
     requirements:
       id: \d+
-
-app_partage:
-    path:    /partager
-    defaults: { _controller: "AppBundle:Payment:partager"}

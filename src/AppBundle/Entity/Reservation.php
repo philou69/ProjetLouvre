@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Validator\Constraints as AppAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Reservation.
@@ -30,6 +31,7 @@ class Reservation
 
     /**
      * @ORM\Column(name="email", type="text")
+     * @Assert\Email
      */
     private $email;
 
@@ -297,5 +299,38 @@ class Reservation
     public function getPayer()
     {
         return $this->payer;
+    }
+
+
+
+    public function memeJour()
+    {
+        $nowDate = date('Y-m-d');
+        $nowHeure = date('H');
+
+        if ($this->getDateReservation()->format('Y-m-d') == $nowDate && $nowHeure > 14) {
+            $this->addDemiJournee(true);
+        }
+    }
+
+    public function calculPrix()
+    {
+        if ($this->memeNom() === true) {
+            if ($this->isDemiJournee() === true) {
+                $this->setPrix(17.5);
+            } else {
+                $this->setPrix(35);
+            }
+        } else {
+            $prix = 0;
+            foreach ($this->getBillets() as $billet) {
+                if ($this->isDemiJournee() === true) {
+                    $prix = $prix + ($billet->getPrix() / 2);
+                } else {
+                    $prix = $prix + $billet->getPrix();
+                }
+            }
+            $this->setPrix($prix);
+        }
     }
 }

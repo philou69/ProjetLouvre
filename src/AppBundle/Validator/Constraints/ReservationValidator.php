@@ -18,7 +18,7 @@ class ReservationValidator extends ConstraintValidator
     {
         $dateComplete = $this->em->getRepository('AppBundle:CompteReservation')->findOneBy(array('dateReservation' =>$value->getDateReservation()));
 
-        if($dateComplete->getTotal() > (1000-$value->getBillets()->count()))
+        if($dateComplete !== null && $dateComplete->getTotal() > (1000-$value->getBillets()->count()))
         {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('date', $value->getDateReservation()->format('d/m/Y'))

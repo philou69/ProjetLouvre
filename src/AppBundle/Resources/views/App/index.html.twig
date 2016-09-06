@@ -7,6 +7,8 @@
 {% block body %}
 	<div class="col-sm-8 jumbotron">
 		<h2 class="text-center">Bienvenue sur le site de réservation du musée du Louvre</h2>
+		<p>Sur le site vous pourrez <a href="{{ path('app_reservation') }}">réserver</a> vos places<br/>
+			Mais aussi <a href="{{ path('app_tarifs') }}">Consulter</a> les tarifs.</p>
 		<!-- Création d'un slider de 4 images -->
 		<div id="carousel" class="carousel slide" data-ride="carousel">
 			<div class="carousel-inner" role="listebox">

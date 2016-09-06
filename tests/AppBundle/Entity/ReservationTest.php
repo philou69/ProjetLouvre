@@ -5,7 +5,7 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Entity\Reservation;
 use AppBundle\Entity\Billet;
 
-class Reservation extends \PHPUnit_Framework_TestCase
+class ReservationTest extends \PHPUnit_Framework_TestCase
 {
 	public function testMemeNom()
 	{
@@ -98,7 +98,7 @@ class Reservation extends \PHPUnit_Framework_TestCase
 		$billet4->setNom('Pichet')
 				->setDateNaissance(new \DateTime('2006-09-20'));
 
-		$reservation->setPrix();
+		$reservation->calculPrix();
 		$this->assertEquals('35', $reservation->getPrix());
 	}
 
@@ -129,7 +129,7 @@ class Reservation extends \PHPUnit_Framework_TestCase
 		$billet4->setNom('Pichet')
 				->setDateNaissance(new \DateTime('2002-09-20'));
 
-		$reservation->setPrix();
+		$reservation->calculPrix();
 		$this->assertEquals('64', $reservation->getPrix());
 	}
 
@@ -159,7 +159,7 @@ class Reservation extends \PHPUnit_Framework_TestCase
 		$billet->setNom('pichet')
 				->setDateNaissance(new \DateTime('1987-08-25'));
 
-		$reservation->setPrix();
+		$reservation->calculPrix();
 		$this->assertEquals('8', $reservation->getPrix());
 	}
 
@@ -173,7 +173,7 @@ class Reservation extends \PHPUnit_Framework_TestCase
 
 		$billet->setDateNaissance(new \DateTime('1987-08-25'));
 
-		$reservation->setPrix();
+		$reservation->calculPrix();
 		$this->assertEquals('16', $reservation->getPrix());
 	}
 
@@ -186,7 +186,7 @@ class Reservation extends \PHPUnit_Framework_TestCase
 		$reservation->setDateReservation('01-08-2016');
 
 		$billet->setDateNaissance(new \DateTime('1987-08-25'));
-		$reservation->setPrix();
+		$reservation->calculPrix();
 		$this->assertEquals('16', $reservation->getPrix());
 	}
 }

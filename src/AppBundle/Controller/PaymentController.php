@@ -72,12 +72,5 @@ class PaymentController extends Controller
     {
         return $this->render('AppBundle:App:payer.html.twig', array('reservation' => $reservation));
     }
-    public function partagerAction(Reservation $reservation)
-    {
-        return $this->render('AppBundle:App:facebook.html.twig', array('reservation' => $reservation));
-    }
 
-    public function twitterAction()
-    {
-    }
 }

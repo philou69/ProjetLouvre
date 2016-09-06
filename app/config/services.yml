@@ -6,18 +6,12 @@ parameters:
 services:
    reservation.capture.event_subscriber:
        class: AppBundle\EventListener\ReservationSubscriber
-       calls:
-        - [ setSnappy, ["@knp_snappy.pdf"]]
-        - [ setTwig, ['@twig']]
-        - [ setPdfPath, ['%pdf_path%']]
-        - [ setMailer, ['@mailer']]
+       arguments: ['@knp_snappy.pdf', '@twig', '%pdf_path%', '@mailer' ]
        tags:
          - { name: kernel.event_subscriber }
 
-   reservation.persist.event_subscriber:
-      class: AppBundle\EventListener\ReservationSubscriber
-      tags:
-        - { name: kernel.event_subscriber }
+   calcul_prix.calcul_prix:
+       class: AppBundle\CalculPrix\CalculPrix
 
    validator.date_reservation:
       class: AppBundle\Validator\Constraints\FullDateReservationValidator

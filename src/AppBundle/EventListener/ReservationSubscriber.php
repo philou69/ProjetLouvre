@@ -12,67 +12,24 @@ class ReservationSubscriber implements EventSubscriberInterface
     private $pdfPath;
     private $mailer;
 
-    public function setSnappy(LoggableGenerator $snappy)
+    public function __construct(LoggableGenerator $snappy, \Twig_Environment $twig, $pdfPath, \Swift_Mailer $mailer)
     {
         $this->snappy = $snappy;
-    }
-
-    public function setTwig(\Twig_Environment $twig)
-    {
         $this->twig = $twig;
-    }
-
-    public function setPdfPath($pdfPath)
-    {
         $this->pdfPath = $pdfPath;
-    }
-
-    public function setMailer(\Swift_Mailer $mailer)
-    {
         $this->mailer = $mailer;
     }
 
     public static function getSubscribedEvents()
     {
         return array(
-      'reservation.persist' => array(array('memeJour'), array('calculPrix')),
       'reservation.captured' => array(array('generatePDF'), array('sendMail')),
     );
     }
 
-    public function memeJour($event)
-    {
-        $reservation = $event->getReservation();
 
-        $nowDate = date('Y-m-d');
-        $nowHeure = date('H');
 
-        if ($reservation->getDateReservation()->format('Y-m-d') == $nowDate && $nowHeure > 14) {
-            $reservation->addDemiJournee(true);
-        }
-    }
 
-    public function calculPrix($event)
-    {
-        $reservation = $event->getReservation();
-        if ($reservation->memeNom() === true) {
-            if ($reservation->isDemiJournee() === true) {
-                $reservation->setPrix(17.5);
-            } else {
-                $reservation->setPrix(35);
-            }
-        } else {
-            $prix = 0;
-            foreach ($reservation->getBillets() as $billet) {
-                if ($reservation->isDemiJournee() === true) {
-                    $prix = $prix + ($billet->getPrix() / 2);
-                } else {
-                    $prix = $prix + $billet->getPrix();
-                }
-            }
-            $reservation->setPrix($prix);
-        }
-    }
 
     public function generatePDF($event)
     {
