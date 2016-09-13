@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints;
 class Reservation extends Constraint
 {
     public $message = 'Vous ne pouvez commander autant de billets pour le date';
+    public $messageBillet = 'Il doit y avoir au moins un billet';
 
     public function validatedBy()
     {

@@ -36,6 +36,7 @@ class AppController extends Controller
             $calculateur = $this->get('calcul_prix.calcul_prix');
             $calculateur->calculPrix($reservation);
 
+            $reservation->setCodeReservation(uniqid());
             $em->persist($reservation);
             $em->flush();
 
@@ -47,8 +48,9 @@ class AppController extends Controller
 
     public function confirmationAction(Reservation $reservation)
     {
-        if ($reservation === null) {
-            return $this->redirectToRoute('app_reservation');
+        if ($reservation === null)
+        {
+            throw new NotFoundHttpException('La réservation '.$reservation->getId().' n\'a pas été trouver');
         } elseif ($reservation->isPayer()) {
             return $this->redirectToRoute('app_home');
         }

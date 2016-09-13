@@ -3,11 +3,18 @@
 <head>
 	<meta charset="utf-8">
 	<title>Billets musée du Louvre</title>
+	<style type="text/css">
+		#logo{
+			float: right;
+		}
+	</style>
 </head>
 <body>
-	<h2>Bilets d'entrée du musée du Louvre</h2>
+	<h2>Billets d'entrée du musée du Louvre</h2>
+	<div><img src="{{ app.request.getSchemeAndHttpHost() ~ asset('/uploads/images/logoLouvre.jpg') }}" id="logo"></div>
 	<div >
 		<p>
+			Reservation numéro : {{ reservation.codeReservation }}<br>
 			Billet(s) de la reservation du {{ reservation.dateReservation|date('d/m/Y') }}, enregistrer avec l'email {{ reservation.email }}<br/>
 			Nombre de billets : {{ reservation.billets|length }}</li>
 			Prix total : {{ reservation.prix }}</li>
@@ -26,7 +33,7 @@
 				{% endif %}
 				Prix : {{ billet.prix }}
 			</p>
-			<img src="{{ qrcode_data_uri("Billet"+ billet.id) }}"
+			<img src="{{ qrcode_data_uri(url('app_billets',{'codeReservation': reservation.codeReservation})) }}"
 	</div>
 	{% endfor %}
 

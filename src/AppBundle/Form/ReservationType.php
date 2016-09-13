@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ReservationType extends AbstractType
 {
@@ -31,6 +32,7 @@ class ReservationType extends AbstractType
                            'allow_add' => true,
                            'allow_delete' => true,
                            'label_attr' => array('class' => 'col-xs-2'),
+                            'constraints' => [ new Valid()]
                           ))
             ->add('save', SubmitType::class, array(
                           'label' => 'Valider',
@@ -44,7 +46,7 @@ class ReservationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Reservation',
+            'data_class' => 'AppBundle\Entity\Reservation'
         ));
     }
 }

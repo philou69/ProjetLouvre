@@ -8,11 +8,16 @@ use Payum\Core\Request\GetHumanStatus;
 use AppBundle\Entity\Reservation;
 use AppBundle\Entity\CompteReservation;
 use AppBundle\Event\ReservationEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentController extends Controller
 {
     public function prepareAction(Reservation $reservation, $gateway)
     {
+        if ($reservation === null)
+        {
+            throw new NotFoundHttpException('La réservation '.$reservation->getId().' n\'a pas été trouver');
+        }
         $gatewayName = $gateway;
 
         $storage = $this->get('payum')->getStorage('AppBundle\Entity\Payment');
@@ -36,6 +41,7 @@ class PaymentController extends Controller
 
     public function doneAction(Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
         $token = $this->get('payum')->getHttpRequestVerifier()->verify($request);
 
@@ -45,7 +51,10 @@ class PaymentController extends Controller
 
         $payment = $status->getFirstModel();
         $reservation = $em->getRepository('AppBundle\Entity\Reservation')->findOneBy(array('id' => $payment->getClientId()));
-
+        if ($reservation === null)
+        {
+            throw new NotFoundHttpException('La réservation '.$reservation->getId().' n\'a pas été trouver');
+        }
         if ($status->isCaptured()) {
             $reservation->addPayement();
 
@@ -70,6 +79,10 @@ class PaymentController extends Controller
 
     public function recapitulatifAction(Reservation $reservation)
     {
+        if ($reservation === null)
+        {
+            throw new NotFoundHttpException('La réservation '.$reservation->getId().' n\'a pas été trouver');
+        }
         return $this->render('AppBundle:App:payer.html.twig', array('reservation' => $reservation));
     }
 

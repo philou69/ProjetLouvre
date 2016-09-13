@@ -2,6 +2,8 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{% block title %}Musée du Louvre{% endblock %}</title>
 		<!-- Lien cdn bootstrap -->
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -18,30 +20,35 @@
 				img:{
 					max-width: 100%;
 				}
+				#logo{
+					max-height: 100%;
+				}
 			{% endblock %}
 		</style>
 	</head>
-	<body class="container">
-		<header>
-			<!-- Création d'une navbar bootstrap fixe -->
-			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-				<div class="container">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><i class="glyphicon glyphicon-menu-hamburger"></i>Menu</button>
-						<a class="navbar-brand" href="#">Le Louvre</a>
+	<body>
+		<div class="container">
+			<header>
+				<!-- Création d'une navbar bootstrap fixe -->
+				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+					<div class="container">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><i class="glyphicon glyphicon-menu-hamburger"></i>Menu</button>
+							<a class="navbar-brand" href="#" class="row"><img id="logo" src="{{ asset('/uploads/images/logoLouvre.jpg') }}" alt="" class="col-xs-2"><div class="col-xs-8">Le Louvre</div></a>
+						</div>
+						<div class="navbar-collapse collapse">
+							<ul class="nav navbar-nav navbar-right">
+								<li id="accueil"><a href="{{ path('app_home') }}"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+								<li id="tarifs"><a href="{{ path('app_tarifs') }}">Tarif et Horaires</a></li>
+								<li id="reservation"><a href="{{ path('app_reservation') }}">Réservation</a></li>
+							</ul>
+						</div>
 					</div>
-					<div class="navbar-collapse collapse">
-						<ul class="nav navbar-nav">
-							<li id="accueil"><a href="{{ path('app_home') }}"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
-							<li id="tarifs"><a href="{{ path('app_tarifs') }}">Tarif et Horaires</a></li>
-							<li id="reservation"><a href="{{ path('app_reservation') }}">Réservation</a></li>
-						</ul>						
-					</div>
-				</div>
-			</nav>
-		</header>
-		<div class="row">
-			{% block body %}{% endblock %}
+				</nav>
+			</header>
+			<div class="row">
+				{% block body %}{% endblock %}
+			</div>
 		</div>
 	</body>
 	{% block javascript %}

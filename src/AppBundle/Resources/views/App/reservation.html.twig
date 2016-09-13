@@ -35,6 +35,7 @@
 				{{ form_widget(form.email,{'attr':{'class':'form-control input-sm email'}}) }}
 			</div>
 		</div>
+
 		<div id="reservation_billets" data-prototype="{{ form_widget(form.billets.vars.prototype)|e}}">
 			{% for billet in form.billets %}
 			    {{ form_widget(billet)}}

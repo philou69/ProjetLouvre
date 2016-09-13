@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class BilletType extends AbstractType
 {
@@ -28,6 +29,11 @@ class BilletType extends AbstractType
             ->add('dateNaissance', DateType::class, array(
                       'label' => 'Date de naissance :',
                       'years' => range(1916, 2016),
+            ))
+            ->add('pays', EntityType::class, array(
+                'class' => 'AppBundle\Entity\Pays',
+                'label' => 'Pays',
+                'choice_label' => 'name',
             ))
         ;
     }

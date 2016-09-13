@@ -32,3 +32,7 @@ app_recapitulatif:
     defaults: { _controller: "AppBundle:Payment:recapitulatif"}
     requirements:
       id: \d+
+
+app_billets:
+    path:  /billeterie/{codeReservation}
+    defaults: { _controller: "AppBundle:Billeterie:reservation"}

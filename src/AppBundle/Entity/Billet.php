@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Validator\Constraints as AppAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Billet.
@@ -21,17 +23,19 @@ class Billet
     private $id;
 
     /**
-     * @ORM\Column(name="nom", type="string")
+     * @Assert\NotBlank()
+     * @ORM\Column(name="nom", type="string", nullable = false)
      */
     private $nom;
 
     /**
-     * @ORM\Column(name="prenom", type="string")
+     * @Assert\NotBlank()
+     * @ORM\Column(name="prenom", type="string", nullable = false)
      */
     private $prenom;
 
     /**
-     * @ORM\Column(name="date_naissance", type= "date")
+     * @ORM\Column(name="date_naissance", type= "date", nullable = false)
      */
     private $dateNaissance;
 
@@ -51,10 +55,17 @@ class Billet
      */
     private $reservation;
 
+
     /**
      * @ORM\Column(name="prix", type="integer")
      */
     private $prix;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pays")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $pays;
 
     public function __construct()
     {
@@ -259,4 +270,23 @@ class Billet
     {
         return $this->reservation;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPays()
+    {
+        return $this->pays;
+    }
+
+    /**
+     * @param mixed $pays
+     */
+    public function setPays($pays)
+    {
+        $this->pays = $pays;
+    }
+
+
+
 }

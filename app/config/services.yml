@@ -25,4 +25,4 @@ services:
       calls:
         - [ setEntityManager, ['@doctrine.orm.entity_manager']]
       tags:
-        - { name: validator.constraint_validator}
+        - { name: validator.constraint_validator }

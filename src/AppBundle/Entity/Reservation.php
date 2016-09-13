@@ -57,6 +57,13 @@ class Reservation
     private $payer;
 
     /**
+     * @ORM\Column(name="code_reservation", type="string", unique= true)
+     */
+    private $codeReservation;
+
+
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -333,4 +340,24 @@ class Reservation
             $this->setPrix($prix);
         }
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getCodeReservation()
+    {
+        return $this->codeReservation;
+    }
+
+    /**
+     * @param mixed $codeReservation
+     */
+    public function setCodeReservation($codeReservation)
+    {
+        $this->codeReservation = $codeReservation;
+    }
+
+
+
 }

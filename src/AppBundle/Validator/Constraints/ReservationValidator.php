@@ -23,6 +23,10 @@ class ReservationValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->message)
                 ->setParameter('date', $value->getDateReservation()->format('d/m/Y'))
                 ->addViolation();
+        }elseif ($value->getBillets()->count() == 0)
+        {
+            $this->context->buildViolation($constraint->messageBillet)
+                ->addViolation();
         }
     }
 }
