@@ -17,11 +17,10 @@ app_confirmation:
       id: \d+
 
 app_payment:
-    path: /payment/{id}/{gateway}
+    path: /payment/{id}/
     defaults: { _controller: "AppBundle:Payment:prepare"}
     requirements:
         id: \d+
-        gateway: paypal|stripe
 
 app_done:
     path: /done

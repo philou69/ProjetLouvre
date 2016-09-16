@@ -47,7 +47,7 @@ class Reservation
     private $demiJournee;
 
     /**
-     * @ORM\Column(name="prix", type="integer")
+     * @ORM\Column(name="prix", type="decimal", precision=2)
      */
     private $prix;
 

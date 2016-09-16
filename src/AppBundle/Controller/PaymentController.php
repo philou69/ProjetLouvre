@@ -12,30 +12,28 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentController extends Controller
 {
-    public function prepareAction(Reservation $reservation, $gateway)
+    public function prepareAction(Reservation $reservation)
     {
         if ($reservation === null)
         {
             throw new NotFoundHttpException('La réservation '.$reservation->getId().' n\'a pas été trouver');
         }
-        $gatewayName = $gateway;
+        $gatewayName = "stripe";
 
         $storage = $this->get('payum')->getStorage('AppBundle\Entity\Payment');
 
         $payment = $storage->create();
         $payment->setNumber(uniqid());
         $payment->setCurrencyCode('EUR');
-        $payment->setTotalAmount($reservation->getPrix().'00');
+        $payment->setTotalAmount(number_format($reservation->getPrix(),"2",'',''));
         $payment->setDescription('Billet du louvre');
         $payment->setClientId($reservation->getId());
         $payment->setClientEmail($reservation->getEmail());
-
         $storage->update($payment);
 
         $captureToken = $this->get('payum')->getTokenFactory()->createCaptureToken(
             $gatewayName, $payment, 'app_done'
     );
-
         return $this->redirect($captureToken->getTargetUrl());
     }
 
@@ -55,6 +53,8 @@ class PaymentController extends Controller
         {
             throw new NotFoundHttpException('La réservation '.$reservation->getId().' n\'a pas été trouver');
         }
+
+
         if ($status->isCaptured()) {
             $reservation->addPayement();
 
