@@ -13,6 +13,7 @@
 		<h2 class="text-center">Récapitulatif de commande</h2>
 		<ul class="list-unstyled">
 			<li>Réservation du {{ reservation.dateReservation|date('d/m/Y') }}</li>
+			<li>Adresse mail : {{ reservation.email }}</li>
 			{% if reservation.demiJournee == true %} <li>Réservation en demie journée.<br/>
 				<small>Vous ne pourrez rentrer qu'à partir de 14h.</small></li>
 			{% endif %}
@@ -23,7 +24,7 @@
 											    Billet n° {{loop.index}}{% endif %}
 												<ul>
 													<li>Billet de : {{ billet.nom }} {{ billet.prenom }}</li>
-													<li>né le : {{ billet.dateNaissance|date('d/m/Y') }}</li>
+													<li>Date de naissance : {{ billet.dateNaissance|date('d/m/Y') }}</li>
 													<li>Reduction : {% if billet.reduction == true %}Oui<br/>
 														<small>Un justificatif vous seras demandé à l'entrée.</small> {% else %}
 													    Non{% endif %}</li>
@@ -37,7 +38,7 @@
 		<a href="{{ path('app_reservation') }}">Modifier</a>
 	</div>
 	<div class="col-sm-3 col-sm-push-1 jumbotron">
-		<h2>Payement</h2>
+		<h2>Paiement</h2>
 		<a href="{{ path('app_payment', {'id': reservation.id, 'gateway': 'stripe'})}}" class="row"><img src="{{ asset('/uploads/images/stripe.png') }}" alt="stripe" class="col-sm-12 col-xs-6"/></a>
 	</div>
 {% endblock %}

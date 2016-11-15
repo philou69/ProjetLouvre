@@ -34,6 +34,7 @@ class BilletType extends AbstractType
                 'class' => 'AppBundle\Entity\Pays',
                 'label' => 'Pays',
                 'choice_label' => 'name',
+                'placeholder' => 'Choisiser un pays'
             ))
         ;
     }

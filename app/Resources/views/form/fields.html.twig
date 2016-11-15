@@ -1,8 +1,8 @@
 {% block checkbox_row %}
 	<div class="form-group">
-		<label for="{{ id }}" class='col-xs-5 col-sm-3 control-label'>{{ label }}</label>
+		<label for="{{ id }}" class='col-sm-3 control-label'>{{ label }}</label>
 		{{ form_errors(form) }}
-		<div class="col-xs-6 col-sm-5">
+		<div class="col-sm-5">
 			<input type="checkbox" name="{{ full_name }}" value="{{value}}" id="{{ id}}" class="form-check_input">
 		</div>
 	</div>
@@ -10,18 +10,18 @@
 
 {% block text_row %}
 	<div class="form-group">
-		<label for="{{ id }}" class='col-xs-4 col-sm-3 control-label'>{{ label }}</label>
+		<label for="{{ id }}" class='col-sm-3 control-label'>{{ label }}</label>
 		{{ form_errors(form) }}
-		<div class="col-xs-5 col-sm-5">
+		<div class="col-sm-5">
 			<input type="text" name="{{ full_name }}" value="{{value}}" id="{{ id}}" class="form-control">
 		</div>
 	</div>
 {% endblock %}
 {% block date_row %}
 	<div class="form-group">
-		<label for="{{ id }}" class='col-xs-4 col-sm-3 control-label'>{{ label }}</label>
+		<label for="{{ id }}" class='col-sm-3 control-label'>{{ label }}</label>
 		{{ form_errors(form) }}
-		<div class="col-xs-6 col-sm-5">
+		<div class="col-sm-5">
 		{{ block('date_widget')}}
 		</div>
 	</div>
@@ -29,9 +29,9 @@
 
 {% block choice_row %}
 	<div class="form-group">
-		<label for="{{ id }}" class='col-xs-4 col-sm-3 control-label'>{{ label }}</label>
+		<label for="{{ id }}" class='col-sm-3 control-label'>{{ label }}</label>
 		{{ form_errors(form) }}
-		<div class="col-xs-6 col-sm-5">
+		<div class="col-sm-5">
 			{{ form_widget(form,{'attr':{'class':'form-control'}})}}
 		</div>
 	</div>
