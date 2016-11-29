@@ -3,23 +3,31 @@
 {% block title %}Récapitulatif {% endblock %}
 
 {% block body %}
-<div id="fb-root"></div>
 
-			<div class="col-sm-10 jumbotron">
-				<h2 class="text-center">Récpitulatif de réservation : </h2>
+			<div class="well">
+				<h2 class="text-center">Confirmation de réservation : </h2>
 				<p>
-					Commande numéro : {{ reservation.id }} <br/>
+					Commande numéro : {{ reservation.codeReservation }} <br/>
 					Date de réservation : le {{ reservation.dateReservation|date('d/m/y') }}<br/>
-					Prix total : {{ reservation.prix }} €<br/>
 					Nombre de Billet(s) : {{ reservation.billets|length }} <br/>
-					Status: payer
+					Demi Journée :{% if reservation.demiJournee == true %}
+						Oui {% else %} Non
+									{% endif %} <br><br>
+					Un email contenant le(s) billet(s) au format PDF a été envoyer à l'adressse mail : <br>
+					{{ reservation.email }}
 				</p>
-				<h3>Liste des visiteurs</h3>
+				<h3>Liste des billets</h3>
 				{% for billet in reservation.billets %}
 					<ul class="list-unstyled">
 						<li>Nom : {{ billet.nom }}</li>
 						<li>Prénom: {{ billet.prenom }}</li>
 						<li>Date de naissance : {{ billet.dateNaissance|date('d-m-Y') }}</li>
+						<li>Tarif réduit :{% if billet.reduit == true %} Oui<br>
+								<small>Un justificatif seras demandé à l'entrée</small>
+							{% else %}
+							 Non
+							{% endif %}
+						</li>
 					</ul>
 				{% else %}
 

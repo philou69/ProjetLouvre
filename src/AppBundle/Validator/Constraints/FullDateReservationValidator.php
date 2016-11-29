@@ -37,13 +37,11 @@ class FullDateReservationValidator extends ConstraintValidator
       elseif ($value->format('d/m') == date('01/05') || $value->format('d/m') == date('01/11') || $value->format('d/m') == date('25/12'))
       {
           $this->context->buildViolation($constraint->messageClose)
-              ->setParameter('date', $value->format('d/m'))
               ->addViolation();
       }
       elseif ($value->format('N') == 2 || $value->format('N') == 7)
       {
           $this->context->buildViolation($constraint->messageClose)
-              ->setParameter('date', $value->format('l'))
               ->addViolation();
       }
   }
