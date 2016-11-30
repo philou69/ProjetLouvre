@@ -6,69 +6,98 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{% block title %}Musée du Louvre{% endblock %}</title>
 		<!-- Lien cdn bootstrap -->
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" rel="stylesheet">
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/css/bootstrap-datepicker.min.css">
 
 		<style type="text/css">
 			{% block stylesheets %}
-				img{
-					max-width: 100%;
+				html, body{
+					height: 100%;
+				}
+				#wrap {
+					min-height: 100%;
+					height: auto !important;
+					height: 100%;
+					margin: 0 auto -165px;
+				}
+				#push, #footer {
+					clear: both;
+					min-height: 60px;
+					margin-bottom: 0;
+				}
+				@media (max-width: 767px) {
+					#push, #footer{
+						height: 200px;
+					}
+				}
+				#header{
+
 				}
 				#logo{
+					display: inline;
 					max-height: 100%;
 				}
 			{% endblock %}
 		</style>
 	</head>
 	<body>
-	<div id="fb-root"></div>
-		<header>
-			<!-- Création d'une navbar bootstrap fixe -->
-			<nav class="navbar navbar-default" role="navigation">
-				<div class="container">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><i class="glyphicon glyphicon-menu-hamburger"></i>Menu</button>
-						<a class="navbar-brand" href="#" class="row"><img id="logo" src="{{ asset('/uploads/images/logoLouvre.jpg') }}" alt="" class="col-xs-2"><div class="col-xs-8">Le Louvre</div></a>
+		<div id="wrap">
+			<div id="fb-root"></div>
+			<header>
+				<!-- Création d'une navbar bootstrap fixe -->
+				<nav class="navbar navbar-default" role="navigation">
+					<div class="container">
+						<div class="navbar-header row">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicon glyphicon-menu-hamburger"></span></button>
+							<a id="header"class="navbar-brand" href="#"><img id="logo" src="{{ asset('/uploads/images/logoLouvre.jpg') }}" alt="" > Le Louvre </a>
+						</div>
+						<div class="navbar-collapse collapse">
+							<ul class="nav navbar-nav navbar-right">
+								<li id="accueil"><a href="{{ path('app_home') }}"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+								<li id="tarifs"><a href="{{ path('app_tarifs') }}">Tarif et Horaires</a></li>
+								<li id="reservation"><a href="{{ path('app_reservation') }}">Réservation</a></li>
+							</ul>
+						</div>
 					</div>
-					<div class="navbar-collapse collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li id="accueil"><a href="{{ path('app_home') }}"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+				</nav>
+			</header>
+			<div id="containt" class="container">
+				<div  class="row">
+					{% block body %}{% endblock %}
+				</div>
+			</div>
+			<div id="push"></div>
+		</div>
+		<div id="footer">
+			<div class="container">
+				<footer class="well row ">
+					<div class="col-sm-3">
+						<h5>Les pages</h5>
+						<ul class="list-unstyled">
+							<li id="accueil"><a href="{{ path('app_home') }}">Accueil</a></li>
 							<li id="tarifs"><a href="{{ path('app_tarifs') }}">Tarif et Horaires</a></li>
 							<li id="reservation"><a href="{{ path('app_reservation') }}">Réservation</a></li>
 						</ul>
 					</div>
-				</div>
-			</nav>
-		</header>
-		<div id="containt" class="container">
-			<div  class="row">
-				{% block body %}{% endblock %}
+					<div class="col-sm-3 col-sm-push-6">
+						<h5>Retrouvez nous sur :</h5>
+						<ul>
+							<li id="facebook"><div class="fb-share-button" data-href="https://www.facebook.com/museedulouvre/" data-layout="button" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.facebook.com%2Fmuseedulouvre%2F&amp;src=sdkpreparse">Partager</a></div></li>
+							<li id="tarifs"><a href="https://twitter.com/MuseeLouvre" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @MuseeLouvre</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
+						</ul>
+					</div>
+				</footer>
 			</div>
-			<footer class="well row ">
-				<div class="well col-sm-3">
-					<h5>Les pages</h5>
-					<ul class="list-unstyled">
-						<li id="accueil"><a href="{{ path('app_home') }}">Accueil</a></li>
-						<li id="tarifs"><a href="{{ path('app_tarifs') }}">Tarif et Horaires</a></li>
-						<li id="reservation"><a href="{{ path('app_reservation') }}">Réservation</a></li>
-					</ul>
-				</div>
-				<div class="well col-sm-3 col-sm-push-6">
-					<h5>Retrouvez nous sur :</h5>
-					<ul>
-						<li id="facebook"><div class="fb-share-button" data-href="https://www.facebook.com/museedulouvre/" data-layout="button" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.facebook.com%2Fmuseedulouvre%2F&amp;src=sdkpreparse">Partager</a></div></li>
-						<li id="tarifs"><a href="https://twitter.com/MuseeLouvre" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @MuseeLouvre</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
-					</ul>
-				</div>
-			</footer>
+
 		</div>
+
 	</body>
 	{% block javascript %}
 		<!-- Appel de la bibliothèque JQuery de Bootstrap et du Javascript en cdn -->
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/js/bootstrap-datepicker.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/locales/bootstrap-datepicker.fr.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
