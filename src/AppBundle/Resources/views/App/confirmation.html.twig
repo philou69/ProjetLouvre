@@ -38,7 +38,7 @@
 					<li>Nom : {{ billet.nom }}</li>
 					<li>Prénom : {{ billet.prenom }}</li>
 					<li>Date de naissance : {{ billet.dateNaissance|date('d/m/Y') }}</li>
-					<li>Reduction : {% if billet.reduction == true %}
+					<li>Reduction : {% if billet.reduction%}
 									Oui<br/>
 							<small>Un justificatif vous seras demandé à l'entrée.</small>
 									{% else %}
@@ -54,8 +54,23 @@
 		<div class="text-right">Prix Total : {{ reservation.prix }}</div>
 		<a href="{{ path('app_reservation') }}">Modifier</a>
 	</div>
-	<div class="col-sm-3 col-sm-push-1 jumbotron">
+	<div class="col-sm-3 col-sm-push-1 well">
 		<h2>Paiement</h2>
-		<a href="{{ path('app_payment', {'id': reservation.id, 'gateway': 'stripe'})}}" class="row"><img src="{{ asset('/uploads/images/stripe.png') }}" alt="stripe" class="col-sm-12 col-xs-6"/></a>
+		<form action="{{ path("app_done", {"id": reservation.id}) }}" method="POST">
+			<script
+					src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+					data-key="pk_test_KOEyPiHvMJ3zAl2y7s0haIWw"
+					data-amount="{{ reservation.prix|number_format(2, '', '') }}"
+					data-name="louvre.com"
+					data-description="Widget"
+					data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+					data-locale="EU"
+					data-zip-code="false">
+			</script>
+		</form>
 	</div>
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
 {% endblock %}

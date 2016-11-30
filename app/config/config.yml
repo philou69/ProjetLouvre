@@ -71,26 +71,6 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-payum:
-    security:
-        token_storage:
-            AppBundle\Entity\PaymentToken: { doctrine: orm }
-
-    storages:
-        AppBundle\Entity\Payment: { doctrine: orm }
-
-    gateways:
-        paypal:
-            factory: paypal_express_checkout
-            username:   "%paypal_name%"
-            password:   "%paypal_password%"
-            signature:  "%paypal_signature%"
-            sandbox:    true
-        stripe:
-            factory: stripe_checkout
-            publishable_key:   "%publish_key%"
-            secret_key:        "%secret_key%"
-
 knp_snappy:
     pdf:
         enabled:   true

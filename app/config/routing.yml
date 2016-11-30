@@ -2,12 +2,6 @@ app:
     resource: "@AppBundle/Resources/config/routing.yml"
     prefix: /
 
-payum_capture:
-  resource: "@PayumBundle/Resources/config/routing/capture.xml"
-
-payum_notify:
-  resource: "@PayumBundle/Resources/config/routing/notify.xml"
-
 EndroidQrCodeBundle:
   resource: "@EndroidQrCodeBundle/Controller/"
   type: annotation

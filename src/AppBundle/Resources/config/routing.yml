@@ -16,19 +16,9 @@ app_confirmation:
     requirements:
       id: \d+
 
-app_payment:
-    path: /payment/{id}/
-    defaults: { _controller: "AppBundle:Payment:prepare"}
-    requirements:
-        id: \d+
-
 app_done:
-    path: /done
-    defaults: { _controller: "AppBundle:Payment:done"}
-
-app_recapitulatif:
-    path: /recapitulatif/{id}
-    defaults: { _controller: "AppBundle:Payment:recapitulatif"}
+    path: /done/{id}
+    defaults: { _controller: "AppBundle:App:done"}
     requirements:
       id: \d+
 

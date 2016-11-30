@@ -358,6 +358,10 @@ class Reservation
         $this->codeReservation = $codeReservation;
     }
 
+    public function getPriceFormated()
+    {
+        return number_format($this->getPrix(),"2",'','');
+    }
 
 
 }

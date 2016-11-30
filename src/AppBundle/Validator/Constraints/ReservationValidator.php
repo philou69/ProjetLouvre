@@ -18,6 +18,7 @@ class ReservationValidator extends ConstraintValidator
     {
         $dateComplete = $this->em->getRepository('AppBundle:CompteReservation')->findOneBy(array('dateReservation' =>$value->getDateReservation()));
 
+        // On vérifie si la date de résesrvation ne va pas dépasser les 1000 billets
         if($dateComplete !== null && $dateComplete->getTotal() > (1000-$value->getBillets()->count()))
         {
             $this->context->buildViolation($constraint->message)
@@ -25,6 +26,7 @@ class ReservationValidator extends ConstraintValidator
                 ->addViolation();
         }elseif ($value->getBillets()->count() == 0)
         {
+            // On s'assure que la réservation à au moins un billet
             $this->context->buildViolation($constraint->messageBillet)
                 ->addViolation();
         }
