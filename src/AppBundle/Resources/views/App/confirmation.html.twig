@@ -56,7 +56,9 @@
 	</div>
 	<div class="col-sm-3 col-sm-push-1 well">
 		<h2>Paiement</h2>
-		<form action="{{ path("app_done", {"id": reservation.id}) }}" method="POST">
+		<form action="{{ path("app_done", {"id": reservation.id}) }}" method="POST" id="formulaire">
+			En continuant votre réservation, vous accepter les
+				<a href="https://www.ticketlouvre.fr/louvre/b2c/index.cfm/CGV">Conditions Générales de Vente</a></label>
 			<script
 					src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 					data-key="pk_test_KOEyPiHvMJ3zAl2y7s0haIWw"
@@ -64,8 +66,9 @@
 					data-name="louvre.com"
 					data-description="Widget"
 					data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-					data-locale="EU"
-					data-zip-code="false">
+					data-locale="auto"
+					data-zip-code="false"
+					data-currency="eur">
 			</script>
 		</form>
 	</div>
