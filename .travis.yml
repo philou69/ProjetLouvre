@@ -1,0 +1,21 @@
+sudo: false
+language: php
+
+php:
+  - 7.0
+  - 7.1
+  - nightly
+
+matrix:
+    allow_failures:
+        - php: nightly
+        - php: hhvm
+    fast_finish: true
+
+before_script:
+  - composer install --prefer-dist --no-interaction
+
+script:
+  - php app/console doctrine:database:create --env=test --no-interaction
+  - php app/console doctrine:schema:create --env=test --no-interaction
+  - phpunit
