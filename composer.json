@@ -30,12 +30,12 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "knplabs/knp-snappy-bundle": "~1.4",
         "endroid/qrcode-bundle": "^2.0",
-        "stripe/stripe-php": "^4.2",
-        "doctrine/doctrine-fixtures-bundle": "^2.3"
+        "stripe/stripe-php": "^4.2"
         },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/phpunit-bridge": "^3.0",
+        "doctrine/doctrine-fixtures-bundle": "^2.3"
     },
     "scripts": {
         "post-install-cmd": [
