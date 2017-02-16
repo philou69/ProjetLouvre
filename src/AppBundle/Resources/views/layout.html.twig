@@ -13,28 +13,21 @@
 
 		<style type="text/css">
 			{% block stylesheets %}
-				html, body{
-					height: 100%;
-				}
-				#wrap {
-					min-height: 100%;
-					height: auto !important;
-					height: 100%;
-					margin: 0 auto -165px;
-				}
-				#push, #footer {
-					clear: both;
-					min-height: 60px;
-					margin-bottom: 0;
-				}
-				@media (max-width: 767px) {
-					#push, #footer{
-						height: 200px;
-					}
-				}
-				#header{
-
-				}
+			html{
+				position: relative;
+				min-height: 99.5%;
+			}
+			body {
+				margin-bottom: 130px;
+			}
+			#footer {
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				height: 130px;
+				background-color: #f5f5f5;
+				padding-top: 20px;
+			}
 				#logo{
 					display: inline;
 					max-height: 100%;
@@ -68,30 +61,27 @@
 					{% block body %}{% endblock %}
 				</div>
 			</div>
-			<div id="push"></div>
 		</div>
-		<div id="footer">
-			<div class="container">
-				<footer class="well row ">
-					<div class="col-sm-3">
-						<h5>Les pages</h5>
-						<ul class="list-unstyled">
-							<li id="accueil"><a href="{{ path('app_home') }}">Accueil</a></li>
-							<li id="tarifs"><a href="{{ path('app_tarifs') }}">Tarif et Horaires</a></li>
-							<li id="reservation"><a href="{{ path('app_reservation') }}">Réservation</a></li>
-						</ul>
-					</div>
-					<div class="col-sm-3 col-sm-push-6">
-						<h5>Retrouvez nous sur :</h5>
-						<ul>
-							<li id="facebook"><div class="fb-share-button" data-href="https://www.facebook.com/museedulouvre/" data-layout="button" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.facebook.com%2Fmuseedulouvre%2F&amp;src=sdkpreparse">Partager</a></div></li>
-							<li id="tarifs"><a href="https://twitter.com/MuseeLouvre" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @MuseeLouvre</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
-						</ul>
-					</div>
-				</footer>
+		<footer id="footer">
+			<div class="row">
+				<div class="col-sm-3 col-sm-push-2">
+					<h5>Les pages</h5>
+					<ul class="list-unstyled">
+						<li id="accueil"><a href="{{ path('app_home') }}">Accueil</a></li>
+						<li id="tarifs"><a href="{{ path('app_tarifs') }}">Tarif et Horaires</a></li>
+						<li id="reservation"><a href="{{ path('app_reservation') }}">Réservation</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-3 col-sm-push-5">
+					<h5>Retrouvez nous sur :</h5>
+					<ul>
+						<li id="facebook"><div class="fb-share-button" data-href="https://www.facebook.com/museedulouvre/" data-layout="button" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.facebook.com%2Fmuseedulouvre%2F&amp;src=sdkpreparse">Partager</a></div></li>
+						<li id="tarifs"><a href="https://twitter.com/MuseeLouvre" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @MuseeLouvre</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
+					</ul>
+				</div>
 			</div>
+		</footer>
 
-		</div>
 
 	</body>
 	{% block javascript %}

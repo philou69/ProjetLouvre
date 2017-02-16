@@ -12,7 +12,7 @@
 	<div class="col-sm-8 jumbotron">
 		<h2 class="text-center">Récapitulatif de réservation</h2></p>
 		<ul class="list-unstyled well">
-			<li>Votre réservation : </li>
+			<li><h3>Votre réservation </h3></li>
 			<li>du : {{ reservation.dateReservation|date('d/m/Y') }}</li>
 			<li>demie journée :
 				{% if reservation.demiJournee == true %}
@@ -57,8 +57,8 @@
 	<div class="col-sm-3 col-sm-push-1 well">
 		<h2>Paiement</h2>
 		<form action="{{ path("app_done", {"id": reservation.id}) }}" method="POST" id="formulaire">
-			En continuant votre réservation, vous accepter les
-				<a href="https://www.ticketlouvre.fr/louvre/b2c/index.cfm/CGV">Conditions Générales de Vente</a></label>
+			En continuant votre réservation, vous accepter les :<br/>
+				<a href="https://www.ticketlouvre.fr/louvre/b2c/index.cfm/CGV">Conditions Générales de Vente</a><br/>
 			<script
 					src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 					data-key="pk_test_KOEyPiHvMJ3zAl2y7s0haIWw"
