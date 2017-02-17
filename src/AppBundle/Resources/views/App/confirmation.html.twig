@@ -9,12 +9,13 @@
 	}
 {% endblock %}
 {% block body %}
+
 	<div class="col-sm-8 jumbotron">
 		<h2 class="text-center">Récapitulatif de réservation</h2></p>
 		<ul class="list-unstyled well">
 			<li><h3>Votre réservation </h3></li>
 			<li>du : {{ reservation.dateReservation|date('d/m/Y') }}</li>
-			<li>demie journée :
+			<li>demi journée :
 				{% if reservation.demiJournee == true %}
 					Oui <br/>
 					<small>Vous ne pourrez rentrer qu'à partir de 14h.</small>
@@ -71,6 +72,14 @@
 					data-currency="eur">
 			</script>
 		</form>
+
+        {% for label,flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+				<div class="alert alert-{{ label }}">
+                    {{ flash }}
+				</div>
+            {% endfor %}
+        {% endfor %}
 	</div>
 {% endblock %}
 

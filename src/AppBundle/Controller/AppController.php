@@ -4,11 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\CompteReservation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Reservation;
 use AppBundle\Entity\Billet;
 use AppBundle\Form\ReservationType;
 use AppBundle\Event\ReservationEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AppController extends Controller
 {
@@ -54,12 +56,17 @@ class AppController extends Controller
 
     public function confirmationAction(Reservation $reservation)
     {
-
+    if($reservation->isPayer()){
+        throw new NotFoundHttpException();
+    }
         return $this->render('AppBundle:App:confirmation.html.twig', array('reservation' => $reservation));
     }
 
     public function doneAction(Request $request, Reservation $reservation)
     {
+        if($reservation->isPayer()){
+            throw new NotFoundHttpException();
+        }
         try{
             // On récupere le token du paiement et crée un paiement stripe
             \Stripe\Stripe::setApiKey($this->container->getParameter('secret_key'));
@@ -74,10 +81,10 @@ class AppController extends Controller
                 'currency' => 'eur'
             ));
         }catch (\Exception $e){
-
+            $request->getSession()->getFlashBag()->add('warning', $e->getMessage());
         }
         // On s'assure que le paiement est passé
-        if($charge->paid){
+        if(isset($charge) && $charge->paid){
             $em = $this->getDoctrine()->getManager();
 
             // On passe le status de la réservation à payer
@@ -104,7 +111,7 @@ class AppController extends Controller
 
         }else{
             // Si le paiement n'est pas passé, on redirige vers le paiement
-            return $this->redirectToRoute('app_confirmatione', array('id' => $reservation->getId()));
+            return $this->redirectToRoute('app_confirmation', array('id' => $reservation->getId()));
         }
     }
 }

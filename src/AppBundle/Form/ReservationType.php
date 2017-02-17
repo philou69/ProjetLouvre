@@ -23,7 +23,7 @@ class ReservationType extends AbstractType
             ->add('dateReservation', TextType::class)
             ->add('email', TextType::class)
             ->add('demiJournee', CheckboxType::class, array(
-                        'label' => 'Demie journée* :',
+                        'label' => 'Demi journée* :',
                         'required' => false,
                         ))
             ->add('billets', CollectionType::class, array(
