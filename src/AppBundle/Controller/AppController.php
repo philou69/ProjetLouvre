@@ -33,7 +33,7 @@ class AppController extends Controller
         $reservation->addBillet(new Billet());
 
         // On récuperer laliste des dates où le musée a atteint le maximum de place
-        $listDatesCompletes = $em->getRepository('AppBundle:CompteReservation')->findBy(array('total' => 1000));
+        $listDatesCompletes = $em->getRepository('AppBundle:Reservation')->getDateFull();
 
         $form = $this->createForm(ReservationType::class, $reservation);
 

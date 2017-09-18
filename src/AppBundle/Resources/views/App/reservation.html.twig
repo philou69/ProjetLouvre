@@ -85,6 +85,7 @@
 		  datesDisabled: [{% for date in listDatesCompletes %}
 			  '{{ date.dateReservation|date('d-m-Y') }}', {% endfor %} '01-11-2016', '25-12-2016','01/05/2017', '01-11-2017', '25-12-2017',]
 		});
+		$container.data('prototype')
 	</script>
 	<script src="{{ asset('/public/js/ajoutBillet.js')}}"></script>
 {% endblock %}

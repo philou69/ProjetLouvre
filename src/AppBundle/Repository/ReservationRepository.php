@@ -10,4 +10,16 @@ namespace AppBundle\Repository;
  */
 class ReservationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getDateFull()
+    {
+        $query = $this->createQueryBuilder('r');
+
+        $query->select('r.dateReservation')
+            ->innerJoin('r.billets', 'b')
+            ->having('COUNT(b.id) > 2')
+            ->orderBy('r.dateReservation', 'ASC')
+            ->groupBy('r.dateReservation');
+
+        return $query->getQuery()->getArrayResult()g;
+    }
 }

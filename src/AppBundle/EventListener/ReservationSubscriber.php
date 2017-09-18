@@ -33,6 +33,8 @@ class ReservationSubscriber implements EventSubscriberInterface
 
     public function generatePDF($event)
     {
+        var_dump('coucou');
+        exit;
         $reservation = $event->getReservation();
         $billetsPdf = $this->snappy->generateFromHtml($this->twig->render('AppBundle:App:billet.html.twig', array('reservation' => $reservation)), $this->pdfPath.'/Reservation'.$reservation->getId().'.pdf');
     }
