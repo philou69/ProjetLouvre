@@ -32,19 +32,19 @@ class AppController extends Controller
         $reservation = new Reservation();
         $reservation->addBillet(new Billet());
 
-        // On récuperer laliste des dates où le musée a atteint le maximum de place
+        // On récuperer la liste des dates où le musée a atteint le maximum de place
         $listDatesCompletes = $em->getRepository('AppBundle:Reservation')->getDateFull();
 
         $form = $this->createForm(ReservationType::class, $reservation);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             // on appelle le service pour calculer le prix
             $calculateur = $this->get('calcul_prix.calcul_prix');
             $calculateur->calculPrix($reservation);
 
             // On attribut un code unique à la réservation, on persiste et on redirige vers la page confirmation
-            $reservation->setCodeReservation(uniqid());
             $em->persist($reservation);
             $em->flush();
 
@@ -54,64 +54,41 @@ class AppController extends Controller
         return $this->render('AppBundle:App:reservation.html.twig', array('form' => $form->createView(), 'listDatesCompletes' => $listDatesCompletes));
     }
 
-    public function confirmationAction(Reservation $reservation)
+    public function confirmationAction(Reservation $reservation, Request $request)
     {
-    if($reservation->isPayer()){
-        throw new NotFoundHttpException();
-    }
+        // Si la reservation est déjà payer, on léve une erreur 404 au lieu de rediriger sur la vue des billets
+        // Cela empechera quiconque de récuperer des billets ne lui appartenant pas
+        if ($reservation->isPayer()) {
+            throw $this->createNotFoundException('Réservation inexistante');
+        }
+
+        if ($request->isMethod('POST')){
+            $payment = $this->get('payment.stripe');
+
+            $status = $payment->payed(
+                $request->request->get("stripeEmail"),
+                $request->request->get('stripeToken'),
+                $reservation
+            );
+
+            if( $status instanceof \Exception){
+                $this->addFlash('warning', $status->getMessage());
+            } elseif ( $reservation->isPayer() ){
+                var_dump($status);
+                //                return $this->redirectToRoute('app_done', ['id' => $reservation->getId()]);
+            }
+        }
+
         return $this->render('AppBundle:App:confirmation.html.twig', array('reservation' => $reservation));
     }
 
     public function doneAction(Request $request, Reservation $reservation)
     {
-        if($reservation->isPayer()){
-            throw new NotFoundHttpException();
+        // Si la reservation n'est pas payer, on redirige sur la page confirmation
+        if (!$reservation->isPayer()) {
+            return $this->redirectToRoute('app_confirmation', ['id' => $reservation->getId()]);
         }
-        try{
-            // On récupere le token du paiement et crée un paiement stripe
-            \Stripe\Stripe::setApiKey($this->container->getParameter('secret_key'));
-            $customer = \Stripe\Customer::create(array(
-                'email' => $request->request->get('stripeEmail'),
-                'source'  => $request->request->get('stripeToken')
-            ));
-
-            $charge = \Stripe\Charge::create(array(
-                'customer' => $customer->id,
-                'amount'   => $reservation->getPriceFormated(),
-                'currency' => 'eur'
-            ));
-        }catch (\Exception $e){
-            $request->getSession()->getFlashBag()->add('warning', $e->getMessage());
-        }
-        // On s'assure que le paiement est passé
-        if(isset($charge) && $charge->paid){
-            $em = $this->getDoctrine()->getManager();
-
-            // On passe le status de la réservation à payer
-            $reservation->addPayement();
-
-            // On récupere une instance de CompteReservation correspondant à la date de la réservation
-            $dateReservation = $em->getRepository('AppBundle:CompteReservation')->findOneBy(array('dateReservation' => $reservation->getDateReservation()));
-            // Si $dateReservation n'existe pas, on crée une instance puis on lui ajoute la quantité de billets de la réservation
-            // Sinon on ajoute simplement le nombre de billets de la réservation
-            if ($dateReservation === null) {
-                $dateReservation = new CompteReservation();
-                $dateReservation->setDateReservation($reservation->getDateReservation());
-                $dateReservation->setTotal($reservation->getBillets()->count());
-            } else {
-                $dateReservation->setTotal($reservation->getBillets()->count());
-            }
-            $em->persist($dateReservation);
-            $em->flush();
-
-            // On appelle l'event qui gerer l'envoie des billets
-            $this->get('event_dispatcher')->dispatch('reservation.captured', new ReservationEvent($reservation));
-
-            return $this->render('AppBundle:App:payer.html.twig', array('reservation' => $reservation));
-
-        }else{
-            // Si le paiement n'est pas passé, on redirige vers le paiement
-            return $this->redirectToRoute('app_confirmation', array('id' => $reservation->getId()));
-        }
+        // Sinon on affiche la vue
+        return $this->render('AppBundle:App:payer.html.twig', array('reservation' => $reservation));
     }
 }

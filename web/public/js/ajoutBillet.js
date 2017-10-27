@@ -4,7 +4,6 @@ var $container = $('div#reservation_billets');
 // On definit le compteur de billets en comptant le nombre d'enfants de container
 // car un enfant de container est un billet
 var index = $container.children().length;
-console.log(index);
 
 // On selection le bouton 'rajouter billet' et on ajout un billet au click
 $('#ajout_billet').click(function(e){
@@ -38,9 +37,9 @@ function ajoutBillet($container) {
   addDeleteLink($prototype, title);
 
   // on ajout le titre et le prototype au container
-  $container.append(title);
+  $prototype.prepend(title);
   $container.append($prototype);
-
+  console.log(index)
   // Enfin, on incremente le compteur
   index ++;
 }
@@ -57,13 +56,8 @@ function addDeleteLink($prototype, title) {
 
   // Ajoute de la suppresion du billet au click
   $deleteLink.click(function(e) {
-    // on selection le titre et le prototype index-1
-    var prototype = document.getElementById("reservation_billets_"+(index-1));
-    var title = document.getElementById("billet"+(index-1));
-    // on les supprimes.
-    prototype.remove();
-    title.remove();
-    index--;
+
+    $prototype.remove();
     e.preventDefault();
     return false;
   })

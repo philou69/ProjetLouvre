@@ -26,3 +26,7 @@ services:
         - [ setEntityManager, ['@doctrine.orm.entity_manager']]
       tags:
         - { name: validator.constraint_validator }
+
+   payment.stripe:
+      class: AppBundle\Payment\StripePayment
+      arguments: [ "%secret_key%", '@doctrine.orm.entity_manager', '@event_dispatcher']

@@ -62,8 +62,7 @@ class Billet
     private $prix;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pays")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      */
     private $pays;
 

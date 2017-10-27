@@ -33,10 +33,9 @@ class ReservationSubscriber implements EventSubscriberInterface
 
     public function generatePDF($event)
     {
-        var_dump('coucou');
-        exit;
-        $reservation = $event->getReservation();
-        $billetsPdf = $this->snappy->generateFromHtml($this->twig->render('AppBundle:App:billet.html.twig', array('reservation' => $reservation)), $this->pdfPath.'/Reservation'.$reservation->getId().'.pdf');
+//
+//        $reservation = $event->getReservation();
+//        $billetsPdf = $this->snappy->generateFromHtml($this->twig->render('AppBundle:App:billet.html.twig', array('reservation' => $reservation)), $this->pdfPath.'/Reservation'.$reservation->getId().'.pdf');
     }
 
     public function sendMail($event)
@@ -49,8 +48,8 @@ class ReservationSubscriber implements EventSubscriberInterface
       ->setTo($reservation->getEmail())
       ->setBody(
         $this->twig->render('AppBundle:App:email.txt.twig', array('reservation' => $reservation), 'text/plain'))
-      ->addPart($this->twig->render('AppBundle:App:email.html.twig', array('reservation' => $reservation),  'text/html'))
-      ->attach(\Swift_Attachment::frompath($this->pdfPath.'/Reservation'.$reservation->getId().'.pdf'));
+      ->addPart($this->twig->render('AppBundle:App:email.html.twig', array('reservation' => $reservation),  'text/html'));
+//      ->attach(\Swift_Attachment::frompath($this->pdfPath.'/Reservation'.$reservation->getId().'.pdf'));
 
         $this->mailer->send($message);
     }

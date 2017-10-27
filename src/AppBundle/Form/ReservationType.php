@@ -31,6 +31,7 @@ class ReservationType extends AbstractType
                            'by_reference' => false,
                            'allow_add' => true,
                            'allow_delete' => true,
+                           'label' => 'Billet',
                            'label_attr' => array('class' => 'col-xs-2'),
                             'constraints' => [ new Valid()]
                           ))

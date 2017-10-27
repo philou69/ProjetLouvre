@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="reservation")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReservationRepository")
  * @AppAssert\Reservation
+ * @AppAssert\FullDateReservation
  */
 class Reservation
 {
@@ -24,7 +25,7 @@ class Reservation
 
     /**
      * @var \Datetime
-     * @AppAssert\FullDateReservation
+     * @AppAssert\CloseDate
      * @ORM\Column(type="date")
      */
     protected $dateReservation;
@@ -71,6 +72,7 @@ class Reservation
         $this->billets = new \Doctrine\Common\Collections\ArrayCollection();
         $this->demiJournee = false;
         $this->payer = false;
+        $this->codeReservation = uniqid('CODE_RESA');
     }
 
     /**

@@ -1,72 +1,80 @@
-<?php 
+<?php
 
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Validator\Constraints as AppAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
-* Billet
-* 
-* @ORM\Table(name="billet")
-* @ORM\Entity(repositoryClass="AppBundle\Repository\BilletRepository")
-*/
+ * Billet.
+ *
+ * @ORM\Table(name="billet")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BilletRepository")
+ */
 class Billet
 {
-	const PRIX = 16;
-	/**
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
-
-	/**
-	 * @ORM\Column(name="nom", type="string")
-	 */
-	private $nom;
-
-	/**
-	 * @ORM\Column(name="prenom", type="string")
-	 */
-	private $prenom;
-
-	/**
-	 * @ORM\Column(name="date_naissance", type= "date")
-	 */
-	private $dateNaissance;
-
-	/**
-	 * @ORM\Column(name="age", type="integer")
-	 */
-	private $age;
-
-	/**
-	 * @ORM\Column(name="reduction", type="boolean")
-	 */
-	private $reduction;
+    const PRIX = 16;
+    /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
     /**
-	 * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Reservation", inversedBy="billets")
-	 * @ORM\JoinColumn(nullable=false)
-	 */
+     * @Assert\NotBlank()
+     * @ORM\Column(name="nom", type="string", nullable = false)
+     */
+    private $nom;
+
+    /**
+     * @Assert\NotBlank()
+     * @ORM\Column(name="prenom", type="string", nullable = false)
+     */
+    private $prenom;
+
+    /**
+     * @ORM\Column(name="date_naissance", type= "date", nullable = false)
+     */
+    private $dateNaissance;
+
+    /**
+     * @ORM\Column(name="age", type="integer")
+     */
+    private $age;
+
+    /**
+     * @ORM\Column(name="reduction", type="boolean")
+     */
+    private $reduction;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Reservation", inversedBy="billets")
+     * @ORM\JoinColumn(nullable=false)
+     */
     private $reservation;
+
 
     /**
      * @ORM\Column(name="prix", type="integer")
      */
     private $prix;
 
+    /**
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $pays;
+
     public function __construct()
     {
         $this->reduction = false;
     }
 
-	
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -74,7 +82,7 @@ class Billet
     }
 
     /**
-     * Set nom
+     * Set nom.
      *
      * @param string $nom
      *
@@ -88,7 +96,7 @@ class Billet
     }
 
     /**
-     * Get nom
+     * Get nom.
      *
      * @return string
      */
@@ -98,7 +106,7 @@ class Billet
     }
 
     /**
-     * Set prenom
+     * Set prenom.
      *
      * @param string $prenom
      *
@@ -112,7 +120,7 @@ class Billet
     }
 
     /**
-     * Get prenom
+     * Get prenom.
      *
      * @return string
      */
@@ -122,7 +130,7 @@ class Billet
     }
 
     /**
-     * Set dateNaissance
+     * Set dateNaissance.
      *
      * @param \DateTime $dateNaissance
      *
@@ -131,12 +139,13 @@ class Billet
     public function setDateNaissance(\DateTime $dateNaissance)
     {
         $this->dateNaissance = $dateNaissance;
-        $this->setAge($dateNaissance);
+        $this->setAge();
+
         return $this;
     }
 
     /**
-     * Get dateNaissance
+     * Get dateNaissance.
      *
      * @return \DateTime
      */
@@ -146,29 +155,28 @@ class Billet
     }
 
     /**
-     * Set age
+     * Set age.
      *
-     * @param integer $age
+     * @param int $age
      *
      * @return Billet
      */
-    public function setAge(\DateTime $dateNaissance)
+    public function setAge()
     {
         $now = new \DateTime();
-
-        $age = $dateNaissance->diff($now);
+        $age = $this->dateNaissance->diff($now);
 
         $this->age = $age->y;
 
         $this->setPrix();
-        
+
         return $this;
     }
 
     /**
-     * Get age
+     * Get age.
      *
-     * @return integer
+     * @return int
      */
     public function getAge()
     {
@@ -176,9 +184,9 @@ class Billet
     }
 
     /**
-     * Set reduction
+     * Set reduction.
      *
-     * @param boolean $reduction
+     * @param bool $reduction
      *
      * @return Billet
      */
@@ -196,12 +204,16 @@ class Billet
     }
 
     /**
-     * Get reduction
+     * Get reduction.
      *
-     * @return boolean
+     * @return bool
      */
     public function getReduction()
     {
+        if ($this->age < 12 && $this->age > 60) {
+            return false;
+        }
+
         return $this->reduction;
     }
 
@@ -212,29 +224,20 @@ class Billet
 
     public function setPrix()
     {
-        if($this->age < 4)
-        {
-           $this->prix = 0;
-        }
-        else if($this->age >=4 && $this->age <= 12)
-        {
+        if ($this->age < 4) {
+            $this->prix = 0;
+        } elseif ($this->age >= 4 && $this->age <= 12) {
             $this->prix = 8;
-        }
-        else if($this->age >= 60)
-        {
+        } elseif ($this->age >= 60) {
             $this->prix = 12;
-        }
-        else
-        {
-            if($this->isReduit() === true){
+        } else {
+            if ($this->isReduit() === true) {
                 $this->prix = 10;
-            }
-            else
-            {
+            } else {
                 $this->prix = self::PRIX;
             }
         }
-        
+
         return $this;
     }
 
@@ -244,7 +247,7 @@ class Billet
     }
 
     /**
-     * Set reservation
+     * Set reservation.
      *
      * @param \AppBundle\Entity\Reservation $reservation
      *
@@ -258,7 +261,7 @@ class Billet
     }
 
     /**
-     * Get reservation
+     * Get reservation.
      *
      * @return \AppBundle\Entity\Reservation
      */
@@ -266,4 +269,23 @@ class Billet
     {
         return $this->reservation;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPays()
+    {
+        return $this->pays;
+    }
+
+    /**
+     * @param mixed $pays
+     */
+    public function setPays($pays)
+    {
+        $this->pays = $pays;
+    }
+
+
+
 }
