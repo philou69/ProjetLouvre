@@ -38,8 +38,6 @@
             <h2>Billet</h2>
         {% endif %}
         <div>
-            <img class="col-sm-3 qrcode"
-                 src="{{ qrcode_data_uri(url('app_billets',{'codeReservation': reservation.codeReservation})) }}">
             <p class="col-sm-9">
                 Nom : {{ billet.nom }}<br/>
                 Prénom : {{ billet.prenom }}<br/>

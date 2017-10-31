@@ -56,6 +56,8 @@ class AppController extends Controller
 
     public function confirmationAction(Reservation $reservation, Request $request)
     {
+        var_dump($reservation);
+        exit;
         // Si la reservation est déjà payer, on léve une erreur 404 au lieu de rediriger sur la vue des billets
         // Cela empechera quiconque de récuperer des billets ne lui appartenant pas
         if ($reservation->isPayer()) {
@@ -74,7 +76,7 @@ class AppController extends Controller
             if( $status instanceof \Exception){
                 $this->addFlash('warning', $status->getMessage());
             } elseif ( $reservation->isPayer() ){
-                var_dump($status);
+
                 //                return $this->redirectToRoute('app_done', ['id' => $reservation->getId()]);
             }
         }

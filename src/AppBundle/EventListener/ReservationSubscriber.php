@@ -2,8 +2,8 @@
 
 namespace AppBundle\EventListener;
 
+use Knp\Snappy\Pdf;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Knp\Bundle\SnappyBundle\Snappy\LoggableGenerator;
 
 class ReservationSubscriber implements EventSubscriberInterface
 {
@@ -12,7 +12,7 @@ class ReservationSubscriber implements EventSubscriberInterface
     private $pdfPath;
     private $mailer;
 
-    public function __construct(LoggableGenerator $snappy, \Twig_Environment $twig, $pdfPath, \Swift_Mailer $mailer)
+    public function __construct(Pdf $snappy, \Twig_Environment $twig, $pdfPath, \Swift_Mailer $mailer)
     {
         $this->snappy = $snappy;
         $this->twig = $twig;
