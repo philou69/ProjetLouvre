@@ -2,9 +2,9 @@
 
 namespace AppBundle\Validator\Constraints;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Doctrine\ORM\EntityManager;
 
 class FullDateReservationValidator extends ConstraintValidator
 {
@@ -16,7 +16,7 @@ class FullDateReservationValidator extends ConstraintValidator
   /**
    * @param EntityManager $em
    */
-  public function setEntityManager(EntityManager $em)
+  public function __construct(EntityManagerInterface $em)
   {
       $this->em = $em;
   }

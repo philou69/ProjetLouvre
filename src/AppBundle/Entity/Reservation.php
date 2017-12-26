@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="reservation")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReservationRepository")
+ * @ORM\HasLifecycleCallbacks()
  * @AppAssert\Reservation
  * @AppAssert\FullDateReservation
  */
@@ -43,24 +44,29 @@ class Reservation
     private $billets;
 
     /**
-     * @ORM\Column(name="demi_journee", type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $demiJournee;
 
     /**
-     * @ORM\Column(name="prix", type="decimal", precision=2)
+     * @ORM\Column(type="decimal", precision=2)
      */
     private $prix;
 
     /**
-     * @ORM\Column(name="payer", type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $payer;
 
     /**
-     * @ORM\Column(name="code_reservation", type="string", unique= true)
+     * @ORM\Column(type="string", unique= true)
      */
     private $codeReservation;
+
+    /**
+     * @ORM\Column(type="string", length=15)
+     */
+    private $ip;
 
 
 
@@ -322,6 +328,9 @@ class Reservation
         }
     }
 
+    /**
+     * @ORM\PrePersist()
+     */
     public function calculPrix()
     {
         if ($this->memeNom() === true) {
@@ -363,6 +372,25 @@ class Reservation
     public function getPriceFormated()
     {
         return number_format($this->getPrix(),"2",'','');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @param mixed $ip
+     * @return $this
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+
+        return $this;
     }
 
 

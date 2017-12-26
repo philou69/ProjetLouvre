@@ -2,14 +2,16 @@
 
 namespace AppBundle\Validator\Constraints;
 
-use Doctrine\ORM\EntityManager;
+
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class ReservationValidator extends ConstraintValidator
 {
     private $em;
-    public function setEntityManager(EntityManager $em)
+
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

@@ -4,29 +4,35 @@ parameters:
    pdf_path: "%kernel.root_dir%/../web/uploads/pdf"
 
 services:
-   reservation.capture.event_subscriber:
-       class: AppBundle\EventListener\ReservationSubscriber
-       arguments: ['@knp_snappy.pdf', '@twig', '%pdf_path%', '@mailer' ]
-       tags:
-         - { name: kernel.event_subscriber }
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
-   calcul_prix.calcul_prix:
-       class: AppBundle\CalculPrix\CalculPrix
 
-   validator.date_reservation:
-      class: AppBundle\Validator\Constraints\FullDateReservationValidator
-      calls:
-        - [ setEntityManager,['@doctrine.orm.entity_manager']]
-      tags:
-        - { name: validator.constraint_validator }
+    AppBundle\:
+        resource: '../../src/AppBundle/*'
+        exclude: '../../src/AppBundle/{Entity,Repository}'
 
-   validator.reservation:
-      class: AppBundle\Validator\Constraints\ReservationValidator
-      calls:
-        - [ setEntityManager, ['@doctrine.orm.entity_manager']]
-      tags:
-        - { name: validator.constraint_validator }
 
-   payment.stripe:
-      class: AppBundle\Payment\StripePayment
-      arguments: [ "%secret_key%", '@doctrine.orm.entity_manager', '@event_dispatcher']
+    AppBundle\Controller\:
+        resource: '../../src/AppBundle/Controller'
+        tags: ['controller.service_argument']
+
+
+
+    AppBundle\EventListener\ReservationSubscriber:
+        arguments:
+            $pdfPath: '%pdf_path%'
+
+
+    AppBundle\Payment\StripePayment:
+        arguments:
+            $stripeKey: '%secret_key%'
+
+#   reservation.capture.event_subscriber:
+#       class: AppBundle\EventListener\ReservationSubscriber
+#       arguments: ['@knp_snappy.pdf', '@twig', '%pdf_path%', '@mailer' ]
+#       tags:
+#         - { name: kernel.event_subscriber }
+
