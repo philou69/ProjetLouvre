@@ -9,22 +9,13 @@ services:
         autoconfigure: true
         public: false
 
-
     AppBundle\:
         resource: '../../src/AppBundle/*'
         exclude: '../../src/AppBundle/{Entity,Repository}'
 
-
     AppBundle\Controller\:
         resource: '../../src/AppBundle/Controller'
         tags: ['controller.service_argument']
-
-
-
-    AppBundle\EventListener\ReservationSubscriber:
-        arguments:
-            $pdfPath: '%pdf_path%'
-
 
     AppBundle\Payment\StripePayment:
         arguments:
@@ -33,7 +24,6 @@ services:
     AppBundle\EventListener\PaymentListener:
         tags:
             - {name: kernel.event_listener, event: kernel.request, method: processingPayment}
-
 
     AppBundle\Generator\GeneratorPDF:
         arguments:

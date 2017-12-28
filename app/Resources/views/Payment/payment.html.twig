@@ -1,0 +1,88 @@
+{% extends '::layout.html.twig' %}
+
+{% block title %} Confirmation {% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	.payment{
+		max-width: 50px;
+	}
+{% endblock %}
+{% block body %}
+
+	<div class="col-sm-8 jumbotron">
+		<h2 class="text-center">Récapitulatif de réservation</h2></p>
+		<ul class="list-unstyled well">
+			<li><h3>Votre réservation </h3></li>
+			<li>du : {{ reservation.dateReservation|date('d/m/Y') }}</li>
+			<li>demi journée :
+				{% if reservation.demiJournee == true %}
+					Oui <br/>
+					<small>Vous ne pourrez rentrer qu'à partir de 14h.</small>
+					{% else %}
+						Non
+				{% endif %}
+			</li>
+			<li>Adresse mail de la réservation : {{ reservation.email }}</li>
+		</ul>
+
+		{% for billet in reservation.billets %}
+			<div class="well">
+				<h3>
+					{% if loop.length == 1 %}
+						Votre billet
+					{% else %}
+						Billet n° {{loop.index}}
+					{% endif %}
+				</h3>
+				<ul class="list-unstyled">
+					<li>Nom : {{ billet.nom }}</li>
+					<li>Prénom : {{ billet.prenom }}</li>
+					<li>Date de naissance : {{ billet.dateNaissance|date('d/m/Y') }}</li>
+					<li>Reduction : {% if billet.reduction%}
+									Oui<br/>
+							<small>Un justificatif vous seras demandé à l'entrée.</small>
+									{% else %}
+										Non
+									{% endif %}
+					</li>
+				</ul>
+			</div>
+
+					</li>
+				{% endfor %}
+			</ul>
+		<div class="text-right">Prix Total : {{ reservation.prix }} €</div>
+		<a href="{{ path('app_reservation') }}">Modifier</a>
+	</div>
+	<div class="col-sm-3 col-sm-push-1 well">
+		<h2>Paiement</h2>
+		<form method="POST" id="formulaire">
+			En continuant votre réservation, vous accepter les :<br/>
+				<a href="https://www.ticketlouvre.fr/louvre/b2c/index.cfm/CGV">Conditions Générales de Vente</a><br/>
+			<script
+					src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+					data-key="pk_test_KOEyPiHvMJ3zAl2y7s0haIWw"
+					data-amount="{{ reservation.prix|number_format(2, '', '') }}"
+					data-name="louvre.com"
+					data-description="Widget"
+					data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+					data-locale="auto"
+					data-zip-code="false"
+					data-currency="eur">
+			</script>
+		</form>
+
+        {% for label,flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+				<div class="alert alert-{{ label }}">
+                    {{ flash }}
+				</div>
+            {% endfor %}
+        {% endfor %}
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+{% endblock %}

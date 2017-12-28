@@ -35,9 +35,9 @@ class MailGunMailer
                 ->setFrom('phil@pichet.eu')
                 ->setTo($reservation->getEmail())
                 ->setBody(
-                    $this->twig->render("AppBundle:App:email.txt.twig", ['reservation' => $reservation], 'text/plain')
+                    $this->twig->render(":Email:email.txt.twig", ['reservation' => $reservation], 'text/plain')
                 )
-                ->addPart($this->twig->render('AppBundle:App:email.html.twig', ['reservation' => $reservation]), 'text/html')
+                ->addPart($this->twig->render(':Email:email.html.twig', ['reservation' => $reservation]), 'text/html')
                 ->attach(\Swift_Attachment::fromPath($pdfURL))
             ;
 

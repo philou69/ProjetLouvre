@@ -31,7 +31,7 @@ class GeneratorPDF
         $pdfUrl = $this->pdfPath . $reservation->getCodeReservation() . '.pdf';
         $this->pdf->generateFromHtml(
             $this->twig->render(
-                '@App/App/billet.html.twig',
+                ':PdfGenerator:billet.html.twig',
                 [
                     'reservation' => $reservation
             ]),

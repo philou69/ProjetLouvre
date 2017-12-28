@@ -15,12 +15,12 @@ class AppController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('AppBundle:App:index.html.twig');
+        return $this->render(':App:index.html.twig');
     }
 
     public function tarifsAction()
     {
-        return $this->render('AppBundle:App:tarifs.html.twig');
+        return $this->render(':App:tarifs.html.twig');
     }
 
     public function reservationAction(Request $request)
@@ -46,7 +46,7 @@ class AppController extends Controller
             return $this->redirectToRoute('app_confirmation', array('id' => $reservation->getId()));
         }
 
-        return $this->render('AppBundle:App:reservation.html.twig', array('form' => $form->createView(), 'listDatesCompletes' => $listDatesCompletes));
+        return $this->render(':Reservation:reservation.html.twig', array('form' => $form->createView(), 'listDatesCompletes' => $listDatesCompletes));
     }
 
 
@@ -60,24 +60,7 @@ class AppController extends Controller
      */
     public function confirmationAction(Reservation $reservation, Request $request, StripePayment $payment, MailGunMailer $mailGunMailer)
     {
-        if ($request->isMethod('POST')) {
-//            $payment = $this->get('payment.stripe');
-
-            $status = $payment->payed(
-                $request->request->get("stripeEmail"),
-                $request->request->get('stripeToken'),
-                $reservation
-            );
-
-            if ($status instanceof \Exception) {
-                $this->addFlash('warning', $status->getMessage());
-            } elseif ($reservation->isPayer()) {
-                $mailGunMailer->sendingMessage($reservation);
-                return $this->redirectToRoute('app_done', ['id' => $reservation->getId()]);
-            }
-        }
-
-        return $this->render('AppBundle:App:confirmation.html.twig', array('reservation' => $reservation));
+        return $this->render(':Payment:payment.html.twig', array('reservation' => $reservation));
     }
 
     /**
@@ -89,7 +72,7 @@ class AppController extends Controller
      */
     public function doneAction(Request $request, Reservation $reservation)
     {
-        return $this->render('@App/App/payer.html.twig', ['reservation' => $reservation]);
+        return $this->render(':Payment:summary.html.twig', ['reservation' => $reservation]);
     }
 
     public function downloadAction(Reservation $reservation)
