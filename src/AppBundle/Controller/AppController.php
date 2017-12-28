@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Mailer\MailGunMailer;
 use AppBundle\Payment\StripePayment;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -50,14 +51,14 @@ class AppController extends Controller
 
 
     /**
-     * @Security("request.getClientIp() ==  reservation.getIp() && reservation.isPayer() == false")
+     * @Security("request.getClientIp() ==  reservation.getIp() && reservation.isPayer() == false", message="Vous ne pouvez acceder à cette page")
      *
      * @param Reservation $reservation
      * @param Request $request
      * @param StripePayment $payment
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function confirmationAction(Reservation $reservation, Request $request, StripePayment $payment)
+    public function confirmationAction(Reservation $reservation, Request $request, StripePayment $payment, MailGunMailer $mailGunMailer)
     {
         if ($request->isMethod('POST')) {
 //            $payment = $this->get('payment.stripe');
@@ -71,6 +72,7 @@ class AppController extends Controller
             if ($status instanceof \Exception) {
                 $this->addFlash('warning', $status->getMessage());
             } elseif ($reservation->isPayer()) {
+                $mailGunMailer->sendingMessage($reservation);
                 return $this->redirectToRoute('app_done', ['id' => $reservation->getId()]);
             }
         }
@@ -80,13 +82,20 @@ class AppController extends Controller
 
     /**
      * @Security("request.getClientIp() ==  reservation.getIp() && reservation.isPayer() == true", statusCode=404, message="Vous ne pouvez acceder à cette page")
+     * @Security("request.headers.get('referer') !=  null",statusCode=404, message="Vous ne pouvez plus acceder à cette page")
      * @param Request $request
      * @param Reservation $reservation
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function doneAction(Request $request, Reservation $reservation)
     {
-            return $this->render('@App/App/payer.html.twig', ['reservation' => $reservation]);
+        return $this->render('@App/App/payer.html.twig', ['reservation' => $reservation]);
+    }
 
+    public function downloadAction(Reservation $reservation)
+    {
+        $pdfUrl = $this->getParameter("pdf_path") . $reservation->getCodeReservation() . ".pdf";
+
+        return $this->file($pdfUrl);
     }
 }

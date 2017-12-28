@@ -64,11 +64,16 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    spool:     { type: memory }
+    transport: "mailgun"
+#    host:      "%mailer_host%"
+#    username:  "%mailer_user%"
+#    password:  "%mailer_password%"
+#    spool:     { type: memory }
+
+cspoo_swiftmailer_mailgun:
+    key: "%mailgun_key%"
+    domain: "pichet.eu"
+#    http_client: 'httplug.client'
 
 knp_snappy:
     pdf:

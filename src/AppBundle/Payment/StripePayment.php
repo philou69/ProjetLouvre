@@ -7,6 +7,7 @@ namespace AppBundle\Payment;
 use AppBundle\Entity\Reservation;
 use AppBundle\Event\ReservationEvent;
 use AppBundle\EventListener\ReservationSubscriber;
+use AppBundle\Mailer\MailGunMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -22,12 +23,14 @@ class StripePayment
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    private $mailgun;
 
-    public function __construct($stripeKey, EntityManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher)
+    public function __construct($stripeKey, EntityManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher, MailGunMailer $mailGunMailer)
     {
         $this->stripeKey = $stripeKey;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->mailgun = $mailGunMailer;
     }
 
     public function payed($stripeEmail, $stripeToken, Reservation $reservation)
@@ -55,9 +58,8 @@ class StripePayment
 
             $this->entityManager->persist($reservation);
             $this->entityManager->flush();
-//
-//            // On appelle l'event qui gerer l'envoie des billets
-            $this->eventDispatcher->dispatch('reservation.captured', new ReservationEvent($reservation));
+
+            $this->mailgun->sendingMessage($reservation);
 
             return $reservation;
 

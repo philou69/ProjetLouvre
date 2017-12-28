@@ -14,8 +14,10 @@
 						Oui {% else %} Non
 									{% endif %} <br><br>
 					Un email contenant le(s) billet(s) au format PDF a été envoyer à l'adressse mail : <br>
-					{{ reservation.email }}
+					{{ reservation.email }}<br>
+					<small>La configuration de l'envoie d'email étant en mode test, les emails ne sont envoyer que pour une seule adresse.</small>
 				</p>
+				<a href="{{ path('app_download_pdf', {'codeReservation': reservation.codeReservation}) }}">Télécharger les billets</a>
 				<h3>Liste des billets</h3>
 				{% for billet in reservation.billets %}
 					<ul class="list-unstyled">

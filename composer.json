@@ -28,9 +28,11 @@
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": ">=3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
-        "knplabs/knp-snappy-bundle": "~1.4",
+        "knplabs/knp-snappy-bundle": ">=1.4",
         "stripe/stripe-php": "^4.2",
-        "php-amqplib/php-amqplib": "^2.7"
+        "php-amqplib/php-amqplib": "^2.7",
+        "cspoo/swiftmailer-mailgun-bundle": "^1.0",
+        "php-http/guzzle6-adapter": "^1.1"
         },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

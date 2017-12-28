@@ -30,7 +30,7 @@ class FullDateReservationValidator extends ConstraintValidator
       $numberBillets = $this->em->getRepository('AppBundle:Reservation')->getNumberBilletsForDate($value->getDateReservation()->format('Y-m-d'));
 
       // On vérifie si la date de résesrvation ne va pas dépasser les 1000 billets avec ceux de la réservation ou faut déjà 1000 billets
-      if($numberBillets > (10 - $value->getBillets()->count()) || $numberBillets === 10)
+      if($numberBillets > (20 - $value->getBillets()->count()) || $numberBillets === 20)
       {
           $this->context->buildViolation($constraint->message)
               ->setParameter('date', $value->getDateReservation()->format('d/m/Y'))

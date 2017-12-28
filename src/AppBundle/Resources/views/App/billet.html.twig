@@ -15,7 +15,8 @@
 </head>
 <body>
 <div class="col-sm-9">
-    <img src="{{ app.request.getSchemeAndHttpHost() ~ asset('/uploads/images/logoLouvre.jpg') }}" id="logo">
+    {#<img src="{{ app.request.getSchemeAndHttpHost() ~ asset('/uploads/images/logoLouvre.jpg') }}" id="logo">#}
+    <img src="{{ absolute_url(asset('/uploads/images/logoLouvre.jpg')) }}" id="logo">
     <h2>Billets d'entrée du musée du Louvre</h2>
     <p>
         Réservation numéro : {{ reservation.codeReservation }}<br>

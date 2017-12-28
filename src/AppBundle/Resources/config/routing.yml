@@ -25,3 +25,9 @@ app_done:
 app_billets:
     path:  /billeterie/{codeReservation}
     defaults: { _controller: "AppBundle:Billeterie:reservation"}
+
+app_download_pdf:
+    path: /pdf/{codeReservation}
+    defaults:
+        _controller: "AppBundle:App:download"
+    methods: ['GET']

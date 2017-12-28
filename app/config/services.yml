@@ -1,7 +1,7 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
-   pdf_path: "%kernel.root_dir%/../web/uploads/pdf"
+   pdf_path: "%kernel.root_dir%/../web/uploads/pdf/"
 
 services:
     _defaults:
@@ -30,9 +30,13 @@ services:
         arguments:
             $stripeKey: '%secret_key%'
 
-#   reservation.capture.event_subscriber:
-#       class: AppBundle\EventListener\ReservationSubscriber
-#       arguments: ['@knp_snappy.pdf', '@twig', '%pdf_path%', '@mailer' ]
-#       tags:
-#         - { name: kernel.event_subscriber }
+    AppBundle\EventListener\PaymentListener:
+        tags:
+            - {name: kernel.event_listener, event: kernel.request, method: processingPayment}
+
+
+    AppBundle\Generator\GeneratorPDF:
+        arguments:
+            $pdfPath: '%pdf_path%'
+
 
